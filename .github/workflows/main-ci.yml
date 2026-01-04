@@ -183,5 +183,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: wheel
-        path: dist/*.whl
+        path: src/core_rust/target/wheels/*.whl
         retention-days: 7
