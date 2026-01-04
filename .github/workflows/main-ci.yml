@@ -176,10 +176,9 @@ jobs:
       id: build
       run: |
         maturin build --release
-      continue-on-error: true
 
     - name: Upload build artifacts
-      if: steps.build.outcome == 'success'
+      if: success()
       uses: actions/upload-artifact@v3
       with:
         name: wheel
