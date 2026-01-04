@@ -31,7 +31,7 @@ pub fn list_modules(py: Python<'_>) -> PyResult<Vec<PyObject>> {
     modules
         .into_iter()
         .map(|info| {
-            let dict = PyDict::new(py);
+            let dict = PyDict::new_bound(py);
             dict.set_item("id", format!("{:?}", info.id).to_lowercase())?;
             dict.set_item("name", info.name)?;
             dict.set_item("description", info.description)?;
@@ -43,7 +43,7 @@ pub fn list_modules(py: Python<'_>) -> PyResult<Vec<PyObject>> {
             dict.set_item("disable_warning", info.disable_warning)?;
 
             // Метрики
-            let metrics = PyDict::new(py);
+            let metrics = PyDict::new_bound(py);
             metrics.set_item("operations", info.metrics.operations)?;
             metrics.set_item("ops_per_sec", info.metrics.ops_per_sec)?;
             metrics.set_item("avg_latency_us", info.metrics.avg_latency_us)?;
@@ -62,7 +62,7 @@ pub fn get_module(py: Python<'_>, module_id: &str) -> PyResult<PyObject> {
     let id = parse_module_id(module_id)?;
     let info = REGISTRY.get_module_info(id);
 
-    let dict = PyDict::new(py);
+    let dict = PyDict::new_bound(py);
     dict.set_item("id", module_id)?;
     dict.set_item("name", info.name)?;
     dict.set_item("description", info.description)?;
@@ -74,7 +74,7 @@ pub fn get_module(py: Python<'_>, module_id: &str) -> PyResult<PyObject> {
     dict.set_item("disable_warning", info.disable_warning)?;
 
     // Метрики
-    let metrics = PyDict::new(py);
+    let metrics = PyDict::new_bound(py);
     metrics.set_item("operations", info.metrics.operations)?;
     metrics.set_item("ops_per_sec", info.metrics.ops_per_sec)?;
     metrics.set_item("avg_latency_us", info.metrics.avg_latency_us)?;
@@ -108,7 +108,7 @@ pub fn get_module_config(py: Python<'_>, module_id: &str) -> PyResult<Option<PyO
 
     match REGISTRY.get_config(id) {
         Some(config) => {
-            let dict = PyDict::new(py);
+            let dict = PyDict::new_bound(py);
             for (key, value) in config.values {
                 // Конвертируем serde_json::Value в Python объект
                 let py_value = json_to_py(py, &value)?;
