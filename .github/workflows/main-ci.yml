@@ -172,12 +172,13 @@ jobs:
         pip install maturin build
 
     - name: Build package
+      id: build
       run: |
         maturin build --release
       continue-on-error: true
 
     - name: Upload build artifacts
-      if: success()
+      if: steps.build.outcome == 'success'
       uses: actions/upload-artifact@v3
       with:
         name: wheel
