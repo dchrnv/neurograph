@@ -122,7 +122,7 @@ neurograph_jupyter = "neurograph_jupyter:_jupyter_nbextension_paths"
 [tool.maturin]
 python-source = "python"
 module-name = "neurograph._neurograph"
-features = ["python"]
+features = []  # TODO: Enable python-bindings after fixing PyO3 API compatibility
 manifest-path = "src/core_rust/Cargo.toml"
 
 [tool.pytest.ini_options]
