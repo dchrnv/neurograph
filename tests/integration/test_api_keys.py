@@ -1,4 +1,5 @@
 """
+# ruff: noqa: F841,E712
 Integration tests for API keys management.
 
 Tests API key creation, usage, revocation, and deletion.

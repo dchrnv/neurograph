@@ -1,4 +1,5 @@
 """
+# ruff: noqa: F841,E712
 Integration tests for rate limiting.
 
 Tests token bucket algorithm and rate limit enforcement.

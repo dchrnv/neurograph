@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: F841,E712
 """
 Test for SignalGateway - Phase 3
 """

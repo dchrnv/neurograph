@@ -1,4 +1,5 @@
 """
+# ruff: noqa: F841,E712
 Integration tests configuration and fixtures.
 """
 
@@ -11,6 +12,7 @@ from pathlib import Path
 src_path = Path(__file__).parent.parent.parent / "src"
 sys.path.insert(0, str(src_path))
 
+# ruff: noqa: E402
 from api.main import app
 from api.storage.api_keys import APIKeyStorage
 
@@ -78,7 +80,7 @@ def test_api_key(client, admin_token):
             f"/api/v1/api-keys/{data['key_id']}",
             headers={"Authorization": f"Bearer {admin_token}"}
         )
-    except:
+    except Exception:  # noqa: S110
         pass
 
 

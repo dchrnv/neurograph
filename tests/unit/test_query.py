@@ -1,4 +1,5 @@
 """Tests for neurograph.query module."""
+# ruff: noqa: F841,E712
 
 import pytest
 from neurograph.query import QueryResult, QueryContext

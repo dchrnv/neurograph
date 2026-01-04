@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: F841,E712
 """
 Quick test for Gateway v2.0 Pydantic models
 """

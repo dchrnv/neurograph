@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# ruff: noqa: F841,E712
+# ruff: noqa: E712
 """
 Test for SensorRegistry - Phase 2
 """

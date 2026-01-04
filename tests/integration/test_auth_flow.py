@@ -1,4 +1,5 @@
 """
+# ruff: noqa: F841,E712
 Integration tests for authentication flow.
 
 Tests JWT authentication, token refresh, logout, and permission checks.
@@ -218,7 +219,7 @@ class TestChangePassword:
 
     def test_change_password_success(self, client, admin_token):
         """Test successful password change."""
-        response = client.post(
+        response = client.post(  # noqa: F841
             "/api/v1/auth/change-password",
             headers={"Authorization": f"Bearer {admin_token}"},
             json={

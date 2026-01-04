@@ -1,4 +1,5 @@
 """Tests for neurograph.runtime module."""
+# ruff: noqa: F841,E712
 
 import pytest
 from neurograph import Runtime, Config

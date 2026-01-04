@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: F841,E712
 """
 NeuroGraph OS - Full System Benchmark v0.51.0
 Tests performance across all layers: Rust Core → Python FFI → REST API

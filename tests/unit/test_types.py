@@ -1,4 +1,5 @@
 """Tests for neurograph.types module."""
+# ruff: noqa: F841,E712
 
 from neurograph.types import (
     FeedbackType,

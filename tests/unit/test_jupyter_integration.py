@@ -1,4 +1,5 @@
 """
+# ruff: noqa: F841,E712
 Unit tests for NeuroGraph Jupyter Integration.
 
 Tests auto-completion, DataFrame helpers, query builder, and widgets.

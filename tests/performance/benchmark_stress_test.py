@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: F841,E712
 """
 NeuroGraph OS - Stress Test Benchmark v0.52.0
 
@@ -273,7 +274,7 @@ class StressTestRunner:
             try:
                 os.killpg(os.getpgid(api_process.pid), signal.SIGTERM)
                 api_process.wait(timeout=5)
-            except:
+            except Exception:  # noqa: S110
                 api_process.kill()
 
     def run(self) -> Dict[str, Any]:
