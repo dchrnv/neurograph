@@ -11,7 +11,7 @@ import time
 import sys
 import psutil
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 # Benchmark configuration
 BENCHMARK_CONFIG = {
@@ -401,7 +401,7 @@ def generate_report(system_info: Dict, rust_results: Dict,
 
     if "memory_usage" in rust_results:
         m = rust_results["memory_usage"]
-        report += f"\n### Memory Usage\n\n"
+        report += "\n### Memory Usage\n\n"
         report += f"- **RSS:** {m['rss_mb']} MB\n"
         report += f"- **VMS:** {m['vms_mb']} MB\n"
 
@@ -564,7 +564,7 @@ def main():
     with open(report_path, "w") as f:
         f.write(report)
 
-    print(f"\n✅ Benchmark complete!")
+    print("\n✅ Benchmark complete!")
     print(f"📄 Report saved: {report_path}")
 
     # Also save JSON results

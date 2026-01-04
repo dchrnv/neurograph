@@ -6,9 +6,11 @@ Demonstrates semantic similarity search with real embeddings.
 Requires a small test embeddings file.
 """
 
-import neurograph as ng
-import tempfile
 import os
+import tempfile
+
+import neurograph as ng
+
 
 def create_test_embeddings():
     """Create a small test embeddings file for demonstration."""
@@ -107,7 +109,7 @@ def main():
 
     finally:
         # Cleanup
-        print(f"\nCleaning up temporary file...")
+        print("\nCleaning up temporary file...")
         os.unlink(embeddings_path)
 
     print("\n" + "=" * 60)

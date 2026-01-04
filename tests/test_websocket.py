@@ -22,13 +22,11 @@ Tests for WebSocket connection, subscription, and event broadcasting.
 """
 
 import pytest
-import json
 from fastapi.testclient import TestClient
 from fastapi.websockets import WebSocketDisconnect
 
 from src.api.main import app
 from src.api.websocket.manager import ConnectionManager
-from src.api.websocket.channels import Channel
 
 
 @pytest.fixture

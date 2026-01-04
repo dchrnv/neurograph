@@ -6,8 +6,7 @@ It normalizes, encodes, and routes signals to the Core.
 """
 
 import time
-from typing import Optional, Dict, Any, List, Callable
-import uuid
+from typing import Optional, Dict, Any, List
 
 from .models import (
     SignalEvent,

@@ -7,7 +7,6 @@ Provides centralized error handling with structured responses.
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
-from pydantic import ValidationError
 import logging
 
 from .exceptions import NeuroGraphException

@@ -4,7 +4,6 @@ Integration tests for rate limiting.
 Tests token bucket algorithm and rate limit enforcement.
 """
 
-import pytest
 import time
 
 

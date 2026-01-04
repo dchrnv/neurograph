@@ -27,7 +27,7 @@ def test_text_adapter_basic():
         chat_id="chat_456"
     )
 
-    print(f"Message sent:")
+    print("Message sent:")
     print(f"  Text: {event.payload.data}")
     print(f"  User ID: {event.payload.metadata.get('user_id')}")
     print(f"  Chat ID: {event.payload.metadata.get('chat_id')}")
@@ -64,7 +64,7 @@ def test_text_adapter_commands():
         chat_id="chat_456"
     )
 
-    print(f"Command sent:")
+    print("Command sent:")
     print(f"  Text: {event.payload.data}")
     print(f"  Command: {event.payload.metadata.get('command')}")
     print(f"  Args: {event.payload.metadata.get('args')}")
@@ -122,7 +122,7 @@ def test_text_adapter_conversations():
     adapter.reset_conversation(chat_id)
     new_event = adapter.handle_message("New conversation", user_id="user_123", chat_id=chat_id)
     assert new_event.temporal.sequence_id != sequence_ids[0]
-    print(f"✓ Conversation reset working")
+    print("✓ Conversation reset working")
     print(f"  New sequence ID: {new_event.temporal.sequence_id}")
     print()
 
@@ -142,9 +142,9 @@ def test_system_adapter_basic():
     # Send single metric
     event = adapter.send_metric("cpu_percent", 45.7)
 
-    print(f"Metric sent:")
-    print(f"  Name: cpu_percent")
-    print(f"  Value: 45.7")
+    print("Metric sent:")
+    print("  Name: cpu_percent")
+    print("  Value: 45.7")
     print(f"  Priority: {event.routing.priority}")
     print(f"  Sensor: {event.source.sensor_id}")
     print()
@@ -212,7 +212,7 @@ def test_system_adapter_custom_metrics():
     # Send custom metrics
     events = adapter.send_custom_metrics()
 
-    print(f"Custom metrics sent:")
+    print("Custom metrics sent:")
     for name, event in events.items():
         value = event.payload.data["value"]
         print(f"  {name}: {value}")
@@ -243,7 +243,7 @@ def test_timer_adapter_single_event():
         priority=75
     )
 
-    print(f"Timer event sent:")
+    print("Timer event sent:")
     print(f"  Timer name: {event.payload.metadata['timer_name']}")
     print(f"  Tick count: {event.payload.metadata['tick_count']}")
     print(f"  Priority: {event.routing.priority}")
@@ -288,7 +288,7 @@ def test_timer_adapter_periodic():
     time.sleep(1.5)
 
     print()
-    print(f"✓ Periodic timer completed")
+    print("✓ Periodic timer completed")
     print(f"  Total ticks: {len(tick_events)}")
     assert len(tick_events) == 5
     print()
@@ -328,7 +328,7 @@ def test_timer_adapter_countdown():
     time.sleep(1.5)
 
     print()
-    print(f"✓ Countdown completed")
+    print("✓ Countdown completed")
     print(f"  Total ticks: {len(countdown_ticks)}")
     assert len(countdown_ticks) == 3  # 1.0 / 0.3 = ~3 ticks
     print()
@@ -368,7 +368,7 @@ def test_timer_adapter_stop():
     # Stop timer
     result = adapter.stop_timer(timer_id)
     assert result == True
-    print(f"✓ Timer stopped")
+    print("✓ Timer stopped")
 
     # Wait a bit more
     time.sleep(0.3)
@@ -377,7 +377,7 @@ def test_timer_adapter_stop():
 
     # Should not have increased much
     assert ticks_after_stop == ticks_before_stop, "Timer should have stopped"
-    print(f"✓ Timer correctly stopped (no new ticks)")
+    print("✓ Timer correctly stopped (no new ticks)")
     print()
 
 

@@ -5,7 +5,6 @@ from ..models.modules import (
     ModuleInfo,
     ModuleMetrics,
     ModuleStatus,
-    ModuleConfig,
 )
 
 

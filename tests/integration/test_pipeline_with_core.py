@@ -12,7 +12,6 @@ sys.path.insert(0, 'src/core_rust/target/release')
 import asyncio
 import _core
 from src.integration import SignalPipeline
-from src.action_controller import ActionPriority
 from src.action_controller.executors import TextResponseAction, LoggingAction
 
 

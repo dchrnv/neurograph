@@ -246,7 +246,6 @@ class ErrorLoggingMiddleware(BaseHTTPMiddleware):
 
 # Example usage
 if __name__ == "__main__":
-    import asyncio
     from fastapi import FastAPI
 
     app = FastAPI()

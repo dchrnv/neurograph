@@ -85,7 +85,7 @@ class TimerAdapter:
 
         # Create 8D vector: [tick_normalized, 0, 0, 0, 0, 0, 0, 0]
         # Normalize tick to [0, 1] range (assuming max 1000 ticks)
-        tick_normalized = min(tick_count / 1000.0, 1.0)
+        min(tick_count / 1000.0, 1.0)
 
         # Use push_system with dict data for PASSTHROUGH encoder
         return self.gateway.push_system(

@@ -4,7 +4,6 @@ TEXT_TFIDF Encoder - TF-IDF + dimension reduction
 
 from typing import List, Any
 import re
-import math
 from collections import Counter
 from .base import BaseEncoder
 

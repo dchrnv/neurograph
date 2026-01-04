@@ -8,7 +8,7 @@ These tests are isolated and don't require full import of the extension.
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, MagicMock, patch, mock_open
+from unittest.mock import Mock
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))

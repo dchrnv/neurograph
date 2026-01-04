@@ -2,7 +2,6 @@
 
 import pytest
 from neurograph.query import QueryResult, QueryContext
-from neurograph.types import SimilarityPair
 
 
 class TestQueryContext:

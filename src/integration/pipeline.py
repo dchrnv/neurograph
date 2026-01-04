@@ -227,11 +227,6 @@ class SignalPipeline:
         """
         try:
             # Build context for ActionController
-            context = {
-                "signal_event": signal_event,
-                "processing_result": processing_result,
-                **action_context  # Merge additional context (e.g., telegram_bot, chat_id)
-            }
 
             # Process through ActionController
             result = await self.controller.process(

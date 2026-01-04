@@ -33,7 +33,7 @@ def load_ipython_extension(ipython):
     # Register auto-completion
     try:
         ipython.set_hook('complete_command', magics._neurograph_completions, str_key='%neurograph')
-    except:
+    except Exception:  # noqa: S110
         pass  # Graceful degradation if completion not supported
 
     # Install rich display formatters

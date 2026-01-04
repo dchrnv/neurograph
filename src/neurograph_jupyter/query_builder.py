@@ -4,7 +4,7 @@ Fluent query builder for NeuroGraph queries.
 Provides programmatic interface for building queries.
 """
 
-from typing import Any, List, Optional, Union
+from typing import Any
 
 
 class QueryBuilder:

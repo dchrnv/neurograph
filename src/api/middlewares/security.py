@@ -7,7 +7,7 @@ Provides security hardening features:
 - Request size limits
 """
 
-from fastapi import Request, Response, status
+from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from typing import Optional

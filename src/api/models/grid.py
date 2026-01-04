@@ -6,7 +6,7 @@ Ported from MVP API with enhancements for production use.
 """
 
 from pydantic import BaseModel, Field
-from typing import List, Tuple, Optional, Dict, Any
+from typing import List, Tuple, Dict, Any
 
 
 class GridConfigRequest(BaseModel):

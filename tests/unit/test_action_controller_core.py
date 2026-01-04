@@ -8,7 +8,6 @@ from src.action_controller import (
     ActionController,
     ActionSelector,
     ActionRegistry,
-    ActionConfig,
     Action,
     ActionResult,
     ActionPriority,
@@ -136,7 +135,7 @@ def test_action_selector():
     }
 
     selected = selector.select(context_high)
-    print(f"High priority context:")
+    print("High priority context:")
     print(f"  Hot path: {len(selected[PathType.HOT])} actions")
     print(f"  Cold path: {len(selected[PathType.COLD])} actions")
     print()
@@ -148,7 +147,7 @@ def test_action_selector():
     }
 
     selected = selector.select(context_low)
-    print(f"Low priority context:")
+    print("Low priority context:")
     print(f"  Hot path: {len(selected[PathType.HOT])} actions")
     print(f"  Cold path: {len(selected[PathType.COLD])} actions")
     print()

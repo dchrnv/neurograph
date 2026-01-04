@@ -1,18 +1,18 @@
 """Runtime management for neurograph library."""
 
-from typing import Optional, Dict, Any
-from pathlib import Path
 import logging
+from pathlib import Path
+from typing import Any, Dict, Optional
 
-from neurograph.exceptions import RuntimeError, BootstrapError, ConfigError
-from neurograph.query import QueryResult, QueryContext
-from neurograph.types import EmbeddingFormat
+from neurograph.exceptions import BootstrapError, ConfigError, RuntimeError
+from neurograph.query import QueryContext, QueryResult
 from neurograph.runtime_storage import (
-    RuntimeTokenStorage,
+    RuntimeCDNAStorage,
     RuntimeConnectionStorage,
     RuntimeGridStorage,
-    RuntimeCDNAStorage,
+    RuntimeTokenStorage,
 )
+from neurograph.types import EmbeddingFormat
 
 logger = logging.getLogger(__name__)
 

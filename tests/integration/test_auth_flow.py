@@ -4,7 +4,6 @@ Integration tests for authentication flow.
 Tests JWT authentication, token refresh, logout, and permission checks.
 """
 
-import pytest
 import time
 
 

@@ -23,7 +23,6 @@ Ported from MVP API with enhancements for production use.
 """
 
 import threading
-import time
 from typing import Dict, List, Optional, Tuple, Any
 from datetime import datetime
 from . import TokenStorageInterface, GridStorageInterface, CDNAStorageInterface
@@ -33,8 +32,9 @@ from pathlib import Path
 # Add src/core to path
 src_path = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(src_path))
+# ruff: noqa: E402
 
-from core.token.token_v2 import Token, create_token_id, FLAG_ACTIVE, FLAG_PERSISTENT
+from core.token.token_v2 import Token, create_token_id, FLAG_PERSISTENT
 
 # Try to import Rust Grid (optional)
 try:

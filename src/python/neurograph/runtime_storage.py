@@ -4,8 +4,8 @@ Provides high-level Python classes for working with tokens, connections,
 grid operations and CDNA configuration in the neurograph runtime.
 """
 
-from typing import Optional, Dict, Any, List, Tuple
 import logging
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 

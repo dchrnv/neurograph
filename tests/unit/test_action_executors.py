@@ -52,7 +52,7 @@ async def test_text_response_action():
 
     result = await action.execute(context)
 
-    print(f"Text Response Action:")
+    print("Text Response Action:")
     print(f"  Success: {result.success}")
     print(f"  Response: {result.data['response_text']}")
     print(f"  Execution time: {result.execution_time_ms:.2f}ms")
@@ -71,7 +71,7 @@ async def test_text_response_action():
 
     result2 = await action2.execute(context)
 
-    print(f"Custom Generator:")
+    print("Custom Generator:")
     print(f"  Success: {result2.success}")
     print(f"  Response: {result2.data['response_text']}")
     print()
@@ -111,7 +111,7 @@ async def test_logging_action():
 
         result = await action.execute(context)
 
-        print(f"Logging Action:")
+        print("Logging Action:")
         print(f"  Success: {result.success}")
         print(f"  Log file: {log_file}")
         print(f"  Execution time: {result.execution_time_ms:.2f}ms")
@@ -120,7 +120,7 @@ async def test_logging_action():
         # Check log file
         with open(log_file, 'r') as f:
             log_content = f.read()
-            print(f"Log content:")
+            print("Log content:")
             print(f"  {log_content[:100]}...")
         print()
 
@@ -164,7 +164,7 @@ async def test_metrics_action():
 
     # Get metrics
     metrics = action.get_metrics()
-    print(f"Collected Metrics:")
+    print("Collected Metrics:")
     print(f"  Total events: {metrics['total_events']}")
     print(f"  Novel events: {metrics['novel_events']}")
     print(f"  Triggered actions: {metrics['triggered_actions_total']}")

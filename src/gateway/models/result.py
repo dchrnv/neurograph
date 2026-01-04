@@ -1,7 +1,7 @@
 """Processing Result - results from Rust Core"""
 
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List
 
 
 class NeighborInfo(BaseModel):

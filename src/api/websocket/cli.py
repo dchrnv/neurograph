@@ -100,7 +100,7 @@ class WebSocketCLI:
             return json.dumps(data)
         else:  # pretty
             msg_type = data.get("type", data.get("channel", "unknown"))
-            timestamp = data.get("timestamp", "")
+            data.get("timestamp", "")
 
             if data.get("channel"):
                 # Channel event

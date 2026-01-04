@@ -16,6 +16,7 @@ from pathlib import Path
 src_path = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(src_path))
 
+# ruff: noqa: E402  # Imports after sys.path modification
 from core.token.token_v2 import (
     Token, extract_local_id, extract_entity_type, extract_domain,
     FLAG_ACTIVE, FLAG_PERSISTENT
@@ -35,7 +36,7 @@ from ..models.auth import User
 from ..dependencies import get_token_storage
 from ..config import settings
 from ..auth.dependencies import get_current_active_user
-from ..auth.permissions import Permission, require_permission
+from ..auth.permissions import Permission
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

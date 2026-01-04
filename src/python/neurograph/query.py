@@ -1,11 +1,10 @@
 """Query execution and result handling."""
 
-from typing import List, Optional, Dict, Any, TYPE_CHECKING
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-from neurograph.types import SimilarityPair, SimilarityList
-from neurograph.exceptions import QueryError
+from neurograph.types import SimilarityList
 
 if TYPE_CHECKING:
     from neurograph.runtime import Runtime

@@ -11,6 +11,7 @@ This example demonstrates:
 
 import neurograph as ng
 
+
 def main():
     print("=" * 60)
     print("NeuroGraph Python Library - Basic Usage Example")

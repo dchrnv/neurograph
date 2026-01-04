@@ -4,7 +4,6 @@ Integration tests for API keys management.
 Tests API key creation, usage, revocation, and deletion.
 """
 
-import pytest
 
 
 class TestAPIKeyManagement:

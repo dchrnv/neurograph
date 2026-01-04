@@ -80,8 +80,8 @@ def example_grid_config():
     print(f"Config: {config}")
 
     # Create grid with custom config
-    grid = Grid(config)
-    print(f"Grid created with custom config")
+    Grid(config)
+    print("Grid created with custom config")
     print()
 
 
@@ -106,7 +106,7 @@ def example_find_neighbors():
         max_results=10
     )
 
-    print(f"Neighbors of token 0 within radius 10.0:")
+    print("Neighbors of token 0 within radius 10.0:")
     for token_id, distance in neighbors:
         print(f"  Token {token_id}: distance = {distance:.2f}")
     print()
@@ -128,7 +128,7 @@ def example_range_query():
         radius=15.0
     )
 
-    print(f"Tokens within radius 15.0 of origin:")
+    print("Tokens within radius 15.0 of origin:")
     print(f"  Found {len(results)} tokens")
     for token_id, distance in results[:5]:  # Show first 5
         print(f"  Token {token_id}: distance = {distance:.2f}")
@@ -258,7 +258,7 @@ def example_large_grid():
     # Perform neighbor searches
     start = time.time()
     for i in range(100):
-        neighbors = grid.find_neighbors(
+        grid.find_neighbors(
             tokens[i].id,
             space=0,
             radius=20.0,

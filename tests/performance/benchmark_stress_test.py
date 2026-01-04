@@ -23,7 +23,7 @@ import time
 import psutil
 import json
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 # Конфигурации нагрузки
 LOAD_PROFILES = {

@@ -24,7 +24,6 @@ Token bucket rate limiting for WebSocket messages to prevent spam/abuse.
 import time
 from typing import Dict, Optional
 from dataclasses import dataclass
-from collections import defaultdict
 
 from ..logging_config import get_logger
 

@@ -4,11 +4,9 @@ Modules Endpoints
 Endpoints for module management and information.
 """
 
-from typing import Optional
 from fastapi import APIRouter, HTTPException, status
 
 from ..models.modules import (
-    ModuleInfo,
     ModuleListResponse,
     ModuleResponse,
     SetEnabledRequest,

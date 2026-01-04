@@ -4,7 +4,7 @@ Plotly-based interactive graph visualizations for NeuroGraph.
 Provides interactive, zoomable, and clickable graph visualizations.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 
 def render_interactive_graph(

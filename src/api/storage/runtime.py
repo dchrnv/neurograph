@@ -31,6 +31,7 @@ import logging
 # Add src/core to path
 src_path = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(src_path))
+# ruff: noqa: E402
 
 from core.token.token_v2 import Token
 

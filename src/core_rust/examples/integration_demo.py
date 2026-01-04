@@ -141,7 +141,7 @@ def demo_1_semantic_network():
         max_results=10
     )
 
-    print(f"\n  Neighbors of 'dog' within radius 5.0:")
+    print("\n  Neighbors of 'dog' within radius 5.0:")
     concept_names = {v.id: k for k, v in tokens.items()}
     for token_id, distance in neighbors:
         if token_id != dog_id:  # Skip self
@@ -158,7 +158,7 @@ def demo_1_semantic_network():
         radius=3.0
     )
 
-    print(f"\n  Concepts within 3.0 units of 'animal':")
+    print("\n  Concepts within 3.0 units of 'animal':")
     for token_id, distance in nearby:
         name = concept_names.get(token_id, f"Token{token_id}")
         print(f"    - {name:8s}: distance = {distance:.2f}")
@@ -383,7 +383,7 @@ def demo_4_multi_dimensional():
 
     print("Multi-dimensional token created:")
     print(f"  ID: {token.id}")
-    print(f"  Entity Type: Agent")
+    print("  Entity Type: Agent")
     print(f"  Weight: {token.weight:.2f}")
 
     # Display all coordinates
@@ -444,7 +444,7 @@ def demo_4_multi_dimensional():
                 if neighbor_id != token.id:
                     print(f"    - Token {neighbor_id}: distance = {distance:.3f}")
         else:
-            print(f"    - No neighbors within radius 5.0")
+            print("    - No neighbors within radius 5.0")
 
     print("\n✓ Demo 4 complete")
     return token, companions, grid

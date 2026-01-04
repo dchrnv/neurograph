@@ -9,13 +9,11 @@ Provides:
 """
 
 import hashlib
-import secrets
 import time
-from datetime import datetime
 from typing import Dict
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPBearer
 
 from ..models.auth import (
     LoginRequest,
@@ -29,12 +27,11 @@ from ..models.auth import (
 )
 from ..models.response import SuccessResponse, ErrorResponse
 from ..auth.jwt import jwt_manager
-from ..auth.dependencies import get_current_user, get_current_active_user
+from ..auth.dependencies import get_current_active_user
 from ..auth.rbac import get_user_role, get_permissions_for_role
 from ..metrics_prometheus import (
     track_auth_login,
-    track_auth_token_operation,
-    track_auth_password_change
+    track_auth_token_operation
 )
 from ..logging_config import get_logger
 

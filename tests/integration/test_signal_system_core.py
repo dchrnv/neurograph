@@ -19,7 +19,7 @@ def test_signal_system_creation():
     print()
 
     system = _core.SignalSystem()
-    print(f"✓ SignalSystem created")
+    print("✓ SignalSystem created")
     print(f"  Available methods: {[m for m in dir(system) if not m.startswith('_')]}")
     print()
 
@@ -40,7 +40,7 @@ def test_emit_event():
         priority=200
     )
 
-    print(f"✓ Event emitted")
+    print("✓ Event emitted")
     print(f"  Result keys: {list(result.keys())}")
     print(f"  Token ID: {result.get('token_id')}")
     print(f"  Is novel: {result.get('is_novel')}")
@@ -97,7 +97,7 @@ def test_statistics():
 
     # Get stats
     stats = system.get_stats()
-    print(f"✓ Statistics retrieved")
+    print("✓ Statistics retrieved")
     print(f"  Total events: {stats.get('total_events')}")
     print(f"  Avg processing time: {stats.get('avg_processing_time_us')}μs")
     print(f"  Novel tokens: {stats.get('novel_tokens')}")

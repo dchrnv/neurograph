@@ -3,12 +3,11 @@ IPython magic commands for NeuroGraph operations.
 """
 
 import argparse
-import sys
 from pathlib import Path
 from typing import Optional
 
 from IPython.core.magic import Magics, magics_class, line_magic, cell_magic
-from IPython.core.magic_arguments import argument, magic_arguments, parse_argstring
+from IPython.core.magic_arguments import argument, magic_arguments
 
 from neurograph.core.connection_manager import ConnectionManager
 from neurograph.core.graph_operations import GraphOperations
@@ -108,10 +107,10 @@ class NeuroGraphMagics(Magics):
             self.shell.user_ns["neurograph_signals"] = self.signal_engine
             self.shell.user_ns["neurograph_ws"] = self.connection_manager
 
-            print(f"✅ NeuroGraph initialized")
+            print("✅ NeuroGraph initialized")
             print(f"📁 Database: {db_path}")
-            print(f"🔗 Connection Manager: Ready")
-            print(f"📡 Signal Engine: Ready")
+            print("🔗 Connection Manager: Ready")
+            print("📡 Signal Engine: Ready")
             print("\nAvailable in namespace:")
             print("  - neurograph_db: GraphOperations")
             print("  - neurograph_signals: SignalEngine")
@@ -326,7 +325,7 @@ Examples:
                 if hasattr(node, 'type') and node.type:
                     types.add(node.type)
             return sorted(list(types))
-        except:
+        except Exception:  # noqa: S110
             return []
 
     def _get_property_names(self):
@@ -341,7 +340,7 @@ Examples:
                 if hasattr(node, 'properties') and node.properties:
                     props.update(node.properties.keys())
             return sorted(list(props))
-        except:
+        except Exception:  # noqa: S110
             return []
 
     def _neurograph_completions(self, event):
@@ -351,7 +350,6 @@ Examples:
         This is called by IPython when user presses TAB.
         """
         # Get the line up to cursor
-        line = event.line
         text_until_cursor = event.text_until_cursor
 
         # Split into words

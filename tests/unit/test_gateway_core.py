@@ -17,7 +17,7 @@ def test_gateway_initialization():
     gateway.initialize()
 
     stats = gateway.get_stats()
-    print(f"Gateway initialized:")
+    print("Gateway initialized:")
     print(f"  Registered sensors: {stats['registered_sensors']}")
     print(f"  Enabled sensors: {stats['enabled_sensors']}")
     print(f"  Total events: {stats['total_events']}")
@@ -26,7 +26,7 @@ def test_gateway_initialization():
 
     # Check built-in sensors
     sensors = gateway.list_sensors()
-    print(f"Built-in sensors:")
+    print("Built-in sensors:")
     for sensor in sensors:
         print(f"  - {sensor.sensor_id} ({sensor.sensor_type})")
     print()
@@ -49,7 +49,7 @@ def test_push_text():
         metadata={"language": "en"}
     )
 
-    print(f"Text signal created:")
+    print("Text signal created:")
     print(f"  event_id: {event.event_id}")
     print(f"  event_type: {event.event_type}")
     print(f"  source.sensor_id: {event.source.sensor_id}")
@@ -90,7 +90,7 @@ def test_push_system():
         metadata={"host": "localhost"}
     )
 
-    print(f"System metric signal created:")
+    print("System metric signal created:")
     print(f"  event_id: {event.event_id}")
     print(f"  event_type: {event.event_type}")
     print(f"  source.sensor_id: {event.source.sensor_id}")
@@ -123,7 +123,7 @@ def test_custom_sensor():
         metadata={"api_version": "v2", "provider": "openweather"}
     )
 
-    print(f"✓ Custom sensor registered")
+    print("✓ Custom sensor registered")
     print()
 
     # Use custom sensor
@@ -140,7 +140,7 @@ def test_custom_sensor():
         priority=120
     )
 
-    print(f"Custom sensor event created:")
+    print("Custom sensor event created:")
     print(f"  event_type: {event.event_type}")
     print(f"  source.sensor_id: {event.source.sensor_id}")
     print(f"  source.sensor_type: {event.source.sensor_type}")
@@ -187,7 +187,7 @@ def test_sequence_tracking():
     assert events[0].temporal.neuro_tick == 1
     assert events[1].temporal.neuro_tick == 2
     assert events[2].temporal.neuro_tick == 3
-    print(f"✓ NeuroTick increments correctly")
+    print("✓ NeuroTick increments correctly")
     print()
 
     # Verify sequence_id preserved
@@ -271,7 +271,7 @@ def test_json_export():
     parsed = json.loads(json_str)
     assert parsed["event_type"] == event.event_type
     assert parsed["payload"]["data"] == "Test message"
-    print(f"✓ JSON is valid and parseable")
+    print("✓ JSON is valid and parseable")
     print()
 
 

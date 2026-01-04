@@ -6,7 +6,7 @@ Handles profiles, validation, quarantine mode, and configuration history.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from typing import Dict, Any, List
+from typing import Dict, Any
 import logging
 from datetime import datetime
 
@@ -154,7 +154,7 @@ async def update_cdna_config(
         )
 
     try:
-        current_config = storage.get_config()
+        storage.get_config()
 
         # Validate if requested
         if request.should_validate:

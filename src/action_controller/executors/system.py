@@ -165,7 +165,7 @@ class MetricsAction(Action):
         start_time = datetime.now()
 
         try:
-            signal_event = context.get("signal_event")
+            context.get("signal_event")
             processing_result = context.get("processing_result", {})
 
             # Update internal metrics

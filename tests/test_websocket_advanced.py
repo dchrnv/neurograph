@@ -28,28 +28,22 @@ Tests for:
 """
 
 import pytest
-import time
-import json
-from datetime import datetime
 
-from src.api.websocket.metrics import metrics, WebSocketMetricsCollector
+from src.api.websocket.metrics import metrics
 from src.api.websocket.permissions import (
     can_subscribe,
     can_broadcast,
-    get_accessible_channels,
-    ChannelPermission
+    get_accessible_channels
 )
 from src.api.websocket.channels import Channel
-from src.api.websocket.rate_limit import rate_limiter, WebSocketRateLimiter
-from src.api.websocket.reconnection import reconnection_manager, ReconnectionManager
+from src.api.websocket.rate_limit import WebSocketRateLimiter
+from src.api.websocket.reconnection import ReconnectionManager
 from src.api.websocket.binary import (
     binary_handler,
-    BinaryMessageHandler,
     BinaryMessageType,
     BinaryMessageFormat
 )
 from src.api.websocket.compression import (
-    default_compressor,
     adaptive_compressor,
     MessageCompressor,
     CompressionAlgorithm

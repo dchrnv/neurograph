@@ -4,9 +4,8 @@ IPython widgets for real-time monitoring and interaction.
 Provides live-updating widgets for metrics, logs, and graph exploration.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 import time
-import asyncio
 
 
 class MetricsWidget:
@@ -33,7 +32,7 @@ class MetricsWidget:
         """
         try:
             import ipywidgets as widgets
-            from IPython.display import display, clear_output
+            from IPython.display import display, clear_output  # noqa: F401
         except ImportError:
             raise ImportError(
                 "ipywidgets required for widgets. "

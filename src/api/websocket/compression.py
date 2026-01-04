@@ -24,7 +24,7 @@ Utilities for compressing/decompressing WebSocket messages to save bandwidth.
 import gzip
 import zlib
 import json
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 from enum import Enum
 
 from ..logging_config import get_logger

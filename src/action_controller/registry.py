@@ -3,7 +3,7 @@ ActionRegistry - Manages available actions and their configurations.
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Type, Callable, Any
+from typing import Dict, List, Optional, Type, Any
 import logging
 
 from .base import Action, ActionPriority

@@ -1,8 +1,8 @@
 """Type definitions for neurograph library."""
 
-from enum import Enum
-from typing import List, Tuple, Dict, Any, Optional
 from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class FeedbackType(Enum):

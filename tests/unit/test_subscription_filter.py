@@ -6,11 +6,7 @@ Tests for SubscriptionFilter - Phase 1
 from src.gateway.filters import SubscriptionFilter
 from src.gateway.filters.examples import (
     telegram_user_messages_filter,
-    telegram_high_priority_filter,
     dashboard_all_events_filter,
-    action_selector_novel_signals_filter,
-    anomaly_detector_high_score_filter,
-    sentiment_positive_filter,
     tag_contains_filter,
 )
 from src.gateway import SignalGateway
@@ -34,14 +30,14 @@ def test_simple_equality():
         "source.domain": "external"
     })
     assert filter1.matches(event) == True
-    print(f"✓ Exact match: source.domain = 'external'")
+    print("✓ Exact match: source.domain = 'external'")
 
     # Test non-match
     filter2 = SubscriptionFilter({
         "source.domain": "internal"
     })
     assert filter2.matches(event) == False
-    print(f"✓ Non-match: source.domain != 'internal'")
+    print("✓ Non-match: source.domain != 'internal'")
     print()
 
 
@@ -60,32 +56,32 @@ def test_comparison_operators():
     # $eq
     filter_eq = SubscriptionFilter({"routing.priority": {"$eq": 150}})
     assert filter_eq.matches(event) == True
-    print(f"✓ $eq: priority = 150")
+    print("✓ $eq: priority = 150")
 
     # $ne
     filter_ne = SubscriptionFilter({"routing.priority": {"$ne": 100}})
     assert filter_ne.matches(event) == True
-    print(f"✓ $ne: priority != 100")
+    print("✓ $ne: priority != 100")
 
     # $gt
     filter_gt = SubscriptionFilter({"routing.priority": {"$gt": 100}})
     assert filter_gt.matches(event) == True
-    print(f"✓ $gt: priority > 100")
+    print("✓ $gt: priority > 100")
 
     # $gte
     filter_gte = SubscriptionFilter({"routing.priority": {"$gte": 150}})
     assert filter_gte.matches(event) == True
-    print(f"✓ $gte: priority >= 150")
+    print("✓ $gte: priority >= 150")
 
     # $lt
     filter_lt = SubscriptionFilter({"routing.priority": {"$lt": 200}})
     assert filter_lt.matches(event) == True
-    print(f"✓ $lt: priority < 200")
+    print("✓ $lt: priority < 200")
 
     # $lte
     filter_lte = SubscriptionFilter({"routing.priority": {"$lte": 150}})
     assert filter_lte.matches(event) == True
-    print(f"✓ $lte: priority <= 150")
+    print("✓ $lte: priority <= 150")
     print()
 
 
@@ -106,7 +102,7 @@ def test_wildcard_operator():
         "event_type": {"$wildcard": "signal.input.*"}
     })
     assert filter1.matches(event) == True
-    print(f"✓ Wildcard: event_type matches 'signal.input.*'")
+    print("✓ Wildcard: event_type matches 'signal.input.*'")
     print(f"  Actual: {event.event_type}")
 
     # More specific wildcard
@@ -114,14 +110,14 @@ def test_wildcard_operator():
         "event_type": {"$wildcard": "signal.input.external.text.*"}
     })
     assert filter2.matches(event) == True
-    print(f"✓ Wildcard: matches 'signal.input.external.text.*'")
+    print("✓ Wildcard: matches 'signal.input.external.text.*'")
 
     # Non-matching wildcard
     filter3 = SubscriptionFilter({
         "event_type": {"$wildcard": "signal.output.*"}
     })
     assert filter3.matches(event) == False
-    print(f"✓ Wildcard: doesn't match 'signal.output.*'")
+    print("✓ Wildcard: doesn't match 'signal.output.*'")
     print()
 
 
@@ -142,21 +138,21 @@ def test_collection_operators():
         "routing.priority": {"$in": [100, 150, 200]}
     })
     assert filter_in.matches(event) == True
-    print(f"✓ $in: priority in [100, 150, 200]")
+    print("✓ $in: priority in [100, 150, 200]")
 
     # $nin
     filter_nin = SubscriptionFilter({
         "routing.priority": {"$nin": [50, 75, 100]}
     })
     assert filter_nin.matches(event) == True
-    print(f"✓ $nin: priority not in [50, 75, 100]")
+    print("✓ $nin: priority not in [50, 75, 100]")
 
     # $contains (for tags)
     filter_contains = SubscriptionFilter({
         "routing.tags": {"$contains": "text_chat"}
     })
     assert filter_contains.matches(event) == True
-    print(f"✓ $contains: tags contains 'text_chat'")
+    print("✓ $contains: tags contains 'text_chat'")
     print(f"  Actual tags: {event.routing.tags}")
     print()
 
@@ -181,7 +177,7 @@ def test_logical_operators():
         ]
     })
     assert filter_and.matches(event) == True
-    print(f"✓ $and: domain=external AND priority>=150")
+    print("✓ $and: domain=external AND priority>=150")
 
     # $or
     filter_or = SubscriptionFilter({
@@ -191,14 +187,14 @@ def test_logical_operators():
         ]
     })
     assert filter_or.matches(event) == True
-    print(f"✓ $or: domain=internal OR priority>=150")
+    print("✓ $or: domain=internal OR priority>=150")
 
     # $not
     filter_not = SubscriptionFilter({
         "$not": {"source.domain": "system"}
     })
     assert filter_not.matches(event) == True
-    print(f"✓ $not: NOT domain=system")
+    print("✓ $not: NOT domain=system")
 
     # Complex: ($and with $or)
     filter_complex = SubscriptionFilter({
@@ -213,7 +209,7 @@ def test_logical_operators():
         ]
     })
     assert filter_complex.matches(event) == True
-    print(f"✓ Complex: (external OR internal) AND priority>=150")
+    print("✓ Complex: (external OR internal) AND priority>=150")
     print()
 
 
@@ -234,8 +230,8 @@ def test_regex_operator():
         "event_type": {"$regex": r"^signal\.input\..*\.text\..*$"}
     })
     assert filter1.matches(event) == True
-    print(f"✓ Regex: matches pattern")
-    print(f"  Pattern: ^signal\\.input\\..*\\.text\\..*$")
+    print("✓ Regex: matches pattern")
+    print("  Pattern: ^signal\\.input\\..*\\.text\\..*$")
     print(f"  Actual: {event.event_type}")
 
     # Partial regex match
@@ -243,7 +239,7 @@ def test_regex_operator():
         "event_type": {"$regex": r"external"}
     })
     assert filter2.matches(event) == True
-    print(f"✓ Regex: partial match 'external'")
+    print("✓ Regex: partial match 'external'")
     print()
 
 
@@ -265,24 +261,24 @@ def test_filter_examples():
     telegram_filter = telegram_user_messages_filter()
     assert telegram_filter.matches(text_event) == True
     assert telegram_filter.matches(system_event) == False
-    print(f"✓ telegram_user_messages_filter:")
-    print(f"  Text event: MATCH")
-    print(f"  System event: NO MATCH")
+    print("✓ telegram_user_messages_filter:")
+    print("  Text event: MATCH")
+    print("  System event: NO MATCH")
 
     # Test dashboard filter
     dashboard_filter = dashboard_all_events_filter()
     assert dashboard_filter.matches(text_event) == True
     assert dashboard_filter.matches(system_event) == True
-    print(f"✓ dashboard_all_events_filter:")
-    print(f"  Both events: MATCH")
+    print("✓ dashboard_all_events_filter:")
+    print("  Both events: MATCH")
 
     # Test tag filter
     tag_filter = tag_contains_filter("text_chat")
     assert tag_filter.matches(text_event) == True
     assert tag_filter.matches(system_event) == False
-    print(f"✓ tag_contains_filter('text_chat'):")
-    print(f"  Text event: MATCH")
-    print(f"  System event: NO MATCH")
+    print("✓ tag_contains_filter('text_chat'):")
+    print("  Text event: MATCH")
+    print("  System event: NO MATCH")
     print()
 
 
@@ -355,7 +351,7 @@ def test_filter_performance():
     elapsed = time.time() - start
 
     avg_time_us = (elapsed / iterations) * 1_000_000
-    print(f"Complex filter matching:")
+    print("Complex filter matching:")
     print(f"  Iterations: {iterations}")
     print(f"  Total time: {elapsed*1000:.2f}ms")
     print(f"  Avg per match: {avg_time_us:.2f}μs")
@@ -364,7 +360,7 @@ def test_filter_performance():
 
     # Target: <100μs per match for complex filters
     assert avg_time_us < 100, f"Filter too slow: {avg_time_us:.2f}μs > 100μs"
-    print(f"✓ Performance target met (<100μs per match)")
+    print("✓ Performance target met (<100μs per match)")
     print()
 
 

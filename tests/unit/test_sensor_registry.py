@@ -3,7 +3,7 @@
 Test for SensorRegistry - Phase 2
 """
 
-from src.gateway.registry import SensorRegistry, SensorConfig
+from src.gateway.registry import SensorRegistry
 from src.gateway.encoders import EncoderType
 
 
@@ -187,7 +187,7 @@ def test_update_and_unregister():
     config = registry.get_sensor("test_update")
     assert config.default_priority == 200
     assert config.description == "Updated description"
-    print(f"✓ Updated sensor:")
+    print("✓ Updated sensor:")
     print(f"  Priority: {config.default_priority}")
     print(f"  Description: {config.description}")
     print()
@@ -197,7 +197,7 @@ def test_update_and_unregister():
     result = registry.unregister_sensor("test_update")
     assert result == True
     assert not registry.sensor_exists("test_update")
-    print(f"✓ Sensor unregistered successfully")
+    print("✓ Sensor unregistered successfully")
     print()
 
 

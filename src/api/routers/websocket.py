@@ -22,10 +22,10 @@ REST endpoints for WebSocket status and management.
 """
 
 from fastapi import APIRouter, Depends
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 from ..websocket.manager import connection_manager
-from ..websocket.channels import get_all_channels, get_channel_info, Channel
+from ..websocket.channels import get_all_channels, get_channel_info
 from ..auth.dependencies import get_optional_user
 from ..logging_config import get_logger
 

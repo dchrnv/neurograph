@@ -22,14 +22,14 @@ def test_passthrough_encoder():
 
     # Test with list
     vector = encoder.encode([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
-    print(f"Input: [0.1, 0.2, ..., 0.8]")
+    print("Input: [0.1, 0.2, ..., 0.8]")
     print(f"Output: {vector}")
     assert len(vector) == 8
     print()
 
     # Test with dict
     vector2 = encoder.encode({'vector': [0.5] * 8})
-    print(f"Input: dict with 'vector' key")
+    print("Input: dict with 'vector' key")
     print(f"Output: {vector2}")
     assert len(vector2) == 8
     print()
@@ -49,7 +49,7 @@ def test_numeric_encoder():
 
     # Test with single number
     vector = encoder.encode(45.7)
-    print(f"Input: 45.7")
+    print("Input: 45.7")
     print(f"Output: {vector}")
     assert len(vector) == 8
     assert vector[0] > 0  # First dimension should be non-zero
@@ -57,7 +57,7 @@ def test_numeric_encoder():
 
     # Test with list of numbers
     vector2 = encoder.encode([10.0, 20.0, 30.0])
-    print(f"Input: [10.0, 20.0, 30.0]")
+    print("Input: [10.0, 20.0, 30.0]")
     print(f"Output: {vector2}")
     assert len(vector2) == 8
     assert vector2[0] == 0.1
@@ -67,7 +67,7 @@ def test_numeric_encoder():
 
     # Test with dict
     vector3 = encoder.encode({'cpu': 45.7, 'mem': 67.3})
-    print(f"Input: dict {{'cpu': 45.7, 'mem': 67.3}}")
+    print("Input: dict {'cpu': 45.7, 'mem': 67.3}")
     print(f"Output: {vector3}")
     assert len(vector3) == 8
     print()

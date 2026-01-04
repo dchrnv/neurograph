@@ -264,7 +264,7 @@ class ReconnectionManager:
 
     def cleanup_expired_sessions(self):
         """Remove all expired sessions."""
-        now = time.time()
+        time.time()
         expired = []
 
         for client_id, session in self._sessions.items():
@@ -316,7 +316,7 @@ class ReconnectionManager:
         Returns:
             Statistics dictionary
         """
-        now = time.time()
+        time.time()
         valid_sessions = sum(1 for s in self._sessions.values() if s.is_valid())
         expired_sessions = len(self._sessions) - valid_sessions
 

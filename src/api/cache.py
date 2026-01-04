@@ -10,7 +10,7 @@ For production: Replace with Redis or Memcached for distributed caching.
 """
 
 import time
-from typing import Any, Optional, Dict, Tuple
+from typing import Any, Optional, Dict
 from dataclasses import dataclass
 from collections import OrderedDict
 import threading

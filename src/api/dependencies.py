@@ -268,7 +268,7 @@ def check_grid_available() -> bool:
     """
     try:
         # Try to import Rust Grid V2.0
-        import neurograph_grid_v2
+        import neurograph_grid_v2  # noqa: F401
         return True
     except ImportError:
         return False

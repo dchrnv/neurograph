@@ -21,7 +21,7 @@ WebSocket Channel Permissions
 RBAC for WebSocket channels - which roles can subscribe to which channels.
 """
 
-from typing import Set, Optional, List
+from typing import Optional, List
 from enum import Enum
 
 from .channels import Channel

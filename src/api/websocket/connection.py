@@ -25,12 +25,12 @@ import asyncio
 import json
 import uuid
 from typing import Optional
-from fastapi import WebSocket, WebSocketDisconnect, Query, HTTPException, status
+from fastapi import WebSocket, WebSocketDisconnect, Query, status
 from datetime import datetime
 
 from .manager import connection_manager
 from .metrics import metrics
-from .permissions import can_subscribe, can_broadcast
+from .permissions import can_subscribe
 from .rate_limit import rate_limiter
 from .reconnection import reconnection_manager
 from ..logging_config import get_logger
@@ -231,7 +231,7 @@ async def websocket_endpoint(
                 metadata = {"role": user_role}
 
                 try:
-                    recon_token = reconnection_manager.create_reconnection_token(
+                    reconnection_manager.create_reconnection_token(
                         client_id=client_id,
                         user_id=user_id,
                         subscriptions=subscriptions,
@@ -499,7 +499,6 @@ async def _heartbeat_loop(client_id: str):
         client_id: Client identifier
     """
     heartbeat_interval = 30  # seconds
-    timeout = 90  # seconds
 
     try:
         while True:

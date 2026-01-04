@@ -21,7 +21,6 @@ WebSocket Connection Manager
 Manages WebSocket connections, broadcasting, and channel subscriptions.
 """
 
-import asyncio
 import json
 import time
 from typing import Dict, Set, Optional, Any, List
@@ -127,7 +126,7 @@ class ConnectionManager:
                     connected_at = datetime.fromisoformat(connected_at_str)
                     duration = (datetime.utcnow() - connected_at).total_seconds()
                     metrics.track_connection_duration(duration)
-                except:
+                except Exception:  # noqa: S110
                     pass
 
             # Track metrics

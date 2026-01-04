@@ -2,8 +2,8 @@
 Rich display formatters for NeuroGraph objects in Jupyter.
 """
 
-from typing import Any, Dict, List
-from IPython.display import HTML, display
+from typing import Any
+from IPython.display import HTML
 import json
 
 

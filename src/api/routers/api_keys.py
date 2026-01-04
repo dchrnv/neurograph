@@ -6,10 +6,9 @@ Requires admin or developer role for key management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import List
 
-from ..models.response import ApiResponse, SuccessResponse
-from ..models.auth import User, APIKey, APIKeyCreate
+from ..models.response import ApiResponse
+from ..models.auth import User, APIKeyCreate
 from ..auth.dependencies import get_current_active_user
 from ..auth.permissions import Permission
 from ..storage.api_keys import get_api_key_storage

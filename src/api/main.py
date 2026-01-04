@@ -27,8 +27,6 @@ Phase 1 & 2 Complete: Storage layer + Token/Grid/CDNA routers
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import time
-from datetime import datetime
 
 from .config import settings
 from .routers import health, query, status, modules, metrics
@@ -54,8 +52,7 @@ from .middlewares.security import (
 from .exceptions import NeuroGraphException
 from .error_handlers import (
     neurograph_exception_handler,
-    validation_exception_handler,
-    generic_exception_handler
+    validation_exception_handler
 )
 from fastapi.exceptions import RequestValidationError
 

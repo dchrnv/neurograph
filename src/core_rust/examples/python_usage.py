@@ -206,7 +206,7 @@ def example_connection_levels():
 
     # Check active levels
     active_levels = conn.get_active_levels()
-    print(f"Active levels: L{', L'.join(str(l+1) for l in active_levels)}")
+    print(f"Active levels: L{', L'.join(str(level+1) for level in active_levels)}")
 
     # Check individual levels
     for level in range(8):

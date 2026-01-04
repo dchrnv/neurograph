@@ -3,7 +3,6 @@
 Quick test for Gateway v2.0 Pydantic models
 """
 
-import sys
 import time
 from src.gateway.models import (
     SignalEvent,
@@ -148,7 +147,7 @@ def test_signal_event(components):
         result=components["result"],
     )
 
-    print(f"SignalEvent created:")
+    print("SignalEvent created:")
     print(f"  event_id: {event.event_id}")
     print(f"  event_type: {event.event_type}")
     print(f"  schema_version: {event.schema_version}")
@@ -181,7 +180,7 @@ def test_json_serialization(event):
 
     # Import from JSON
     event_restored = SignalEvent.model_validate_json(json_str)
-    print(f"✓ Successfully restored from JSON")
+    print("✓ Successfully restored from JSON")
     print(f"  event_id matches: {event.event_id == event_restored.event_id}")
     print(f"  vector matches: {event.semantic.vector == event_restored.semantic.vector}")
     print()

@@ -3,7 +3,7 @@ FastAPI dependencies for authentication and authorization.
 """
 
 import time
-from typing import Optional, Union
+from typing import Optional
 from fastapi import Depends, HTTPException, status, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 

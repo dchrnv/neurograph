@@ -4,7 +4,7 @@ Helper functions and extensions for NeuroGraph Jupyter integration.
 Provides convenient methods for working with query results.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 import json
 
 

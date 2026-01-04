@@ -6,10 +6,9 @@ Tracks requests per user/API key.
 """
 
 import time
-from typing import Dict, Tuple
-from collections import defaultdict
+from typing import Dict
 import threading
-from fastapi import Request, Response, status
+from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -185,7 +184,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
                     "success": False,
                     "error": {
                         "code": "RATE_LIMIT_EXCEEDED",
-                        "message": f"Rate limit exceeded. Try again later.",
+                        "message": "Rate limit exceeded. Try again later.",
                         "details": {
                             "rate_limit": bucket.capacity,
                             "remaining": bucket.get_remaining(),
