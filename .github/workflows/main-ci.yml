@@ -165,7 +165,7 @@ jobs:
 
     - name: Build package
       run: |
-        python -m build --wheel
+        maturin build --release
       continue-on-error: true
 
     - name: Upload build artifacts
