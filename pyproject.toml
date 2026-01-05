@@ -3,9 +3,9 @@ requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "neurograph"
+name = "ngcore"
 version = "0.63.1"
-description = "NeuroGraph OS - High-performance cognitive platform with Rust Core, WebSocket API, and Jupyter integration"
+description = "NeuroGraph - High-performance cognitive platform with Rust Core, WebSocket API, and Jupyter integration"
 authors = [{name = "Chernov Denys", email = "denys@neurograph.org"}]
 license = {text = "AGPL-3.0"}
 readme = "README.md"

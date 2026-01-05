@@ -1,4 +1,4 @@
-# NeuroGraph OS
+# NeuroGraph
 
 > High-performance cognitive platform with Rust Core, WebSocket API, and Jupyter integration
 
@@ -9,7 +9,7 @@
 
 ## What is NeuroGraph?
 
-NeuroGraph OS is a cognitive computing platform that combines:
+NeuroGraph is a cognitive computing platform that combines:
 - **Rust Core** - High-performance event processing (304K events/sec, 0.39μs latency)
 - **WebSocket API** - Real-time bidirectional communication (~5ms latency)
 - **Jupyter Integration** - Interactive notebooks with magic commands
@@ -19,6 +19,15 @@ NeuroGraph OS is a cognitive computing platform that combines:
 
 ### Installation
 
+**From PyPI:**
+```bash
+pip install ngcore              # Core package
+pip install ngcore[jupyter]     # With Jupyter integration
+pip install ngcore[api]         # With WebSocket API
+pip install ngcore[all]         # Full installation
+```
+
+**From Source:**
 ```bash
 # Clone repository
 git clone https://github.com/chrnv/neurograph-os-mvp.git
@@ -26,9 +35,6 @@ cd neurograph-os-mvp
 
 # Install dependencies
 pip install -e ".[all]"  # Full installation
-# or
-pip install -e ".[jupyter]"  # Jupyter only
-pip install -e ".[api]"  # API server only
 ```
 
 ### Usage
