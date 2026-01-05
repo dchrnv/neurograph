@@ -2,7 +2,7 @@
 
 > High-performance cognitive platform with Rust Core, WebSocket API, and Jupyter integration
 
-[![Version](https://img.shields.io/badge/version-0.63.1-blue.svg)](https://github.com/chrnv/neurograph-os-mvp)
+[![Version](https://img.shields.io/badge/version-0.63.1-blue.svg)](https://github.com/dchrnv/neurograph)
 [![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
 [![Rust](https://img.shields.io/badge/rust-2021-orange.svg)](https://www.rust-lang.org/)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
@@ -30,8 +30,8 @@ pip install ngcore[all]         # Full installation
 **From Source:**
 ```bash
 # Clone repository
-git clone https://github.com/chrnv/neurograph-os-mvp.git
-cd neurograph-os-mvp
+git clone https://github.com/dchrnv/neurograph.git
+cd neurograph
 
 # Install dependencies
 pip install -e ".[all]"  # Full installation
@@ -120,6 +120,6 @@ AGPL-3.0 - See [LICENSE](LICENSE) file for details.
 
 ## Links
 
-- **Repository:** https://github.com/chrnv/neurograph-os-mvp
+- **Repository:** https://github.com/dchrnv/neurograph
 - **Documentation:** [docs/](docs/)
-- **Issues:** https://github.com/chrnv/neurograph-os-mvp/issues
+- **Issues:** https://github.com/dchrnv/neurograph/issues

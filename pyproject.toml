@@ -107,11 +107,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/chrnv/neurograph-os-mvp"
-Repository = "https://github.com/chrnv/neurograph-os-mvp"
-Documentation = "https://github.com/chrnv/neurograph-os-mvp/blob/main/README.md"
-Changelog = "https://github.com/chrnv/neurograph-os-mvp/blob/main/CHANGELOG.md"
-Issues = "https://github.com/chrnv/neurograph-os-mvp/issues"
+Homepage = "https://github.com/dchrnv/neurograph"
+Repository = "https://github.com/dchrnv/neurograph"
+Documentation = "https://github.com/dchrnv/neurograph/blob/main/README.md"
+Changelog = "https://github.com/dchrnv/neurograph/blob/main/CHANGELOG.md"
+Issues = "https://github.com/dchrnv/neurograph/issues"
 
 [project.scripts]
 neurograph = "neurograph_jupyter.cli:main"
