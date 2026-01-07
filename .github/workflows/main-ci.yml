@@ -50,14 +50,9 @@ jobs:
 
     - name: Run pytest
       run: |
-        # Skip tests requiring Rust Core (integration tests)
-        pytest tests/ \
-          --ignore=tests/integration/test_pipeline_with_core.py \
-          --ignore=tests/integration/test_signal_system_core.py \
-          --ignore=tests/test_websocket.py \
-          --ignore=tests/test_websocket_advanced.py \
-          --cov=src --cov-report=xml --cov-report=html --cov-report=term
-      continue-on-error: true
+        # Run unit and integration tests (E2E tests ignored by pytest.ini)
+        pytest tests/ --cov=src --cov-report=xml --cov-report=html --cov-report=term
+      continue-on-error: false
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.11'

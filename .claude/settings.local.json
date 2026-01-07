@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(timeout 10 python:*)",
+      "Bash(python:*)",
+      "Bash(rm:*)",
+      "Bash(cargo build:*)",
+      "Bash(pytest:*)"
+    ]
+  }
+}

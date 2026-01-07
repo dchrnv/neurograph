@@ -4,8 +4,13 @@
 Quick test for Gateway v2.0 Pydantic models
 """
 
+import sys
+from pathlib import Path
+src_path = Path(__file__).parent.parent.parent / "src"
+sys.path.insert(0, str(src_path))
+
 import time
-from src.gateway.models import (
+from gateway.models import (
     SignalEvent,
     SignalSource,
     SemanticCore,
@@ -119,72 +124,163 @@ def test_basic_models():
     print(f"   ✓ Created: token_id={result.token_id}, neighbors={len(result.neighbors)}")
     print()
 
-    return {
-        "source": source,
-        "semantic": semantic,
-        "energy": energy,
-        "temporal": temporal,
-        "payload": payload,
-        "routing": routing,
-        "result": result,
-    }
+    # Success - all models created
+    assert source is not None
+    assert semantic is not None
+    assert energy is not None
+    assert temporal is not None
+    assert payload is not None
+    assert routing is not None
+    assert result is not None
 
 
-def test_signal_event(components):
+def test_signal_event():
     """Test full SignalEvent creation"""
-    print("=" * 60)
-    print("Testing SignalEvent (Master Model)")
-    print("=" * 60)
-    print()
+    # Create components
+    timestamp_us = int(time.time() * 1_000_000)
+
+    source = SignalSource(
+        domain="external",
+        modality="text",
+        sensor_id="test_sensor_001",
+        sensor_type="text_chat",
+        confidence=1.0
+    )
+
+    semantic = SemanticCore(
+        vector=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+        encoding_method="pca_projection"
+    )
+
+    energy = EnergyProfile(
+        magnitude=0.8,
+        valence=0.6,
+        arousal=0.7,
+        urgency=0.9
+    )
+
+    temporal = TemporalBinding(
+        timestamp_us=timestamp_us,
+        neuro_tick=12345
+    )
+
+    payload = RawPayload(
+        data_type="text",
+        data="Hello, NeuroGraph!",
+        size_bytes=18
+    )
+
+    routing = RoutingInfo(
+        priority=200,
+        tags=["test", "user_input"]
+    )
+
+    neighbor = NeighborInfo(
+        token_id=42,
+        distance=0.35,
+        similarity=0.92
+    )
+
+    result = ProcessingResult(
+        token_id=1337,
+        neighbors=[neighbor],
+        is_novel=False,
+        processing_time_us=87
+    )
 
     event = SignalEvent(
         event_type="signal.input.external.text.chat",
-        source=components["source"],
-        semantic=components["semantic"],
-        energy=components["energy"],
-        temporal=components["temporal"],
-        payload=components["payload"],
-        routing=components["routing"],
-        result=components["result"],
+        source=source,
+        semantic=semantic,
+        energy=energy,
+        temporal=temporal,
+        payload=payload,
+        routing=routing,
+        result=result,
     )
 
-    print("SignalEvent created:")
-    print(f"  event_id: {event.event_id}")
-    print(f"  event_type: {event.event_type}")
-    print(f"  schema_version: {event.schema_version}")
-    print(f"  source.sensor_id: {event.source.sensor_id}")
-    print(f"  semantic.vector: {event.semantic.vector}")
-    print(f"  energy.urgency: {event.energy.urgency}")
-    print(f"  temporal.neuro_tick: {event.temporal.neuro_tick}")
-    print(f"  payload.data: {event.payload.data}")
-    print(f"  routing.priority: {event.routing.priority}")
-    print(f"  result.token_id: {event.result.token_id if event.result else 'None'}")
-    print()
-
-    return event
+    # Assertions
+    assert event.event_id is not None
+    assert event.event_type == "signal.input.external.text.chat"
+    assert event.source.sensor_id == "test_sensor_001"
+    assert event.semantic.vector == [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+    assert event.energy.urgency == 0.9
+    assert event.payload.data == "Hello, NeuroGraph!"
 
 
-def test_json_serialization(event):
+def test_json_serialization():
     """Test JSON export/import"""
-    print("=" * 60)
-    print("Testing JSON Serialization")
-    print("=" * 60)
-    print()
+    # Create event
+    timestamp_us = int(time.time() * 1_000_000)
+
+    source = SignalSource(
+        domain="external",
+        modality="text",
+        sensor_id="test_sensor_001",
+        sensor_type="text_chat",
+        confidence=1.0
+    )
+
+    semantic = SemanticCore(
+        vector=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+        encoding_method="pca_projection"
+    )
+
+    energy = EnergyProfile(
+        magnitude=0.8,
+        valence=0.6,
+        arousal=0.7,
+        urgency=0.9
+    )
+
+    temporal = TemporalBinding(
+        timestamp_us=timestamp_us,
+        neuro_tick=12345
+    )
+
+    payload = RawPayload(
+        data_type="text",
+        data="Hello, NeuroGraph!",
+        size_bytes=18
+    )
+
+    routing = RoutingInfo(
+        priority=200,
+        tags=["test", "user_input"]
+    )
+
+    neighbor = NeighborInfo(
+        token_id=42,
+        distance=0.35,
+        similarity=0.92
+    )
+
+    result = ProcessingResult(
+        token_id=1337,
+        neighbors=[neighbor],
+        is_novel=False,
+        processing_time_us=87
+    )
+
+    event = SignalEvent(
+        event_type="signal.input.external.text.chat",
+        source=source,
+        semantic=semantic,
+        energy=energy,
+        temporal=temporal,
+        payload=payload,
+        routing=routing,
+        result=result,
+    )
 
     # Export to JSON
     json_str = event.model_dump_json(indent=2)
-    print(f"JSON size: {len(json_str)} bytes")
-    print()
-    print("Sample JSON (first 500 chars):")
-    print(json_str[:500] + "...")
-    print()
+    assert len(json_str) > 0
 
     # Import from JSON
     event_restored = SignalEvent.model_validate_json(json_str)
-    print("✓ Successfully restored from JSON")
-    print(f"  event_id matches: {event.event_id == event_restored.event_id}")
-    print(f"  vector matches: {event.semantic.vector == event_restored.semantic.vector}")
-    print()
+    assert event.event_id == event_restored.event_id
+    assert event.semantic.vector == event_restored.semantic.vector
 
 
 def test_validation():
