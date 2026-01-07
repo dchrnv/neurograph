@@ -4,6 +4,7 @@
 Tests for ActionController Core - Phase 1
 """
 
+import pytest
 import asyncio
 from src.action_controller import (
     ActionController,
@@ -160,6 +161,7 @@ def test_action_selector():
     print()
 
 
+@pytest.mark.asyncio
 async def test_action_controller():
     """Test ActionController."""
     print("=" * 60)

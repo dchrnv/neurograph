@@ -4,6 +4,7 @@
 Tests for Action Executors - Phase 2
 """
 
+import pytest
 import asyncio
 import tempfile
 import os
@@ -27,6 +28,7 @@ class MockPayload:
         self.data = data
 
 
+@pytest.mark.asyncio
 async def test_text_response_action():
     """Test TextResponseAction."""
     print("=" * 60)
@@ -81,6 +83,7 @@ async def test_text_response_action():
     print()
 
 
+@pytest.mark.asyncio
 async def test_logging_action():
     """Test LoggingAction."""
     print("=" * 60)
@@ -134,6 +137,7 @@ async def test_logging_action():
     print()
 
 
+@pytest.mark.asyncio
 async def test_metrics_action():
     """Test MetricsAction."""
     print("=" * 60)
