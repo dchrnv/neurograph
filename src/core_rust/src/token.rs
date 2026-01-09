@@ -173,7 +173,7 @@ impl Token {
         let mut token = Self::new(id);
 
         // Map each state value to the X-axis of its coordinate space
-        for i in 0..8 {
+        for (i, &state_value) in state.iter().enumerate() {
             let space = match i {
                 0 => CoordinateSpace::L1Physical,
                 1 => CoordinateSpace::L2Sensory,
@@ -187,7 +187,7 @@ impl Token {
             };
 
             // Encode value to X-axis, Y=0, Z=0
-            token.coordinates[i][0] = Self::encode_coordinate(state[i], space);
+            token.coordinates[i][0] = Self::encode_coordinate(state_value, space);
             token.coordinates[i][1] = 0;
             token.coordinates[i][2] = 0;
         }
@@ -204,7 +204,7 @@ impl Token {
     pub fn to_state_f32(&self) -> [f32; 8] {
         let mut state = [0.0f32; 8];
 
-        for i in 0..8 {
+        for (i, state_value) in state.iter_mut().enumerate() {
             let space = match i {
                 0 => CoordinateSpace::L1Physical,
                 1 => CoordinateSpace::L2Sensory,
@@ -217,7 +217,7 @@ impl Token {
                 _ => unreachable!(),
             };
 
-            state[i] = Self::decode_coordinate(self.coordinates[i][0], space);
+            *state_value = Self::decode_coordinate(self.coordinates[i][0], space);
         }
 
         state

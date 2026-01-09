@@ -147,7 +147,7 @@ impl NeighborInfo {
     /// Использует экспоненциальное затухание:
     /// resonance = exp(-distance)
     fn compute_resonance(distance: f32) -> f32 {
-        (-distance).exp().max(0.0).min(1.0)
+        (-distance).exp().clamp(0.0, 1.0)
     }
 
     /// Проверяет что это сильный резонанс

@@ -568,9 +568,11 @@ impl ActionController {
 
     /// Log action_started event
     fn log_action_started(&self, intent: &Intent, _executor_id: &str) {
-        let mut event = ExperienceEvent::default();
-        event.event_type = 1000; // action_started
-        event.state = intent.state.map(|v| v as f32 / 32767.0); // Convert i16 to f32
+        let event = ExperienceEvent {
+            event_type: 1000, // action_started
+            state: intent.state.map(|v| v as f32 / 32767.0), // Convert i16 to f32
+            ..Default::default()
+        };
 
         // Store intent_type and executor_id in event metadata (simplified)
         let _ = self.experience_writer.write_event(event);
@@ -578,9 +580,11 @@ impl ActionController {
 
     /// Log action_finished event
     fn log_action_finished(&self, intent: &Intent, _executor_id: &str, result: &ActionResult) {
-        let mut event = ExperienceEvent::default();
-        event.event_type = 1001; // action_finished
-        event.state = intent.state.map(|v| v as f32 / 32767.0);
+        let mut event = ExperienceEvent {
+            event_type: 1001, // action_finished
+            state: intent.state.map(|v| v as f32 / 32767.0),
+            ..Default::default()
+        };
 
         // Encode success in L8 (Coherence): 1.0 if success, -1.0 if failure
         event.state[7] = if result.success { 1.0 } else { -1.0 };

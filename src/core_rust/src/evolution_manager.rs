@@ -305,12 +305,14 @@ impl EvolutionManager {
             ExperienceEventType::ProposalRejected
         };
 
-        let mut event = ExperienceEvent::default();
-        event.event_type = event_type as u16;
-        event.timestamp = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_micros() as u64;
+        let mut event = ExperienceEvent {
+            event_type: event_type as u16,
+            timestamp: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_micros() as u64,
+            ..Default::default()
+        };
 
         // Encode proposal info in state/action (simplified)
         event.state[0] = proposal.confidence as f32;

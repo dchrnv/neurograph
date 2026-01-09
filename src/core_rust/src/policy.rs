@@ -246,12 +246,12 @@ impl Policy for LinearPolicy {
         let mut action = [0.0; 8];
 
         // Matrix multiplication: action = W * state + b
-        for i in 0..8 {
+        for (i, action_value) in action.iter_mut().enumerate() {
             let mut sum = self.bias[i];
-            for j in 0..8 {
-                sum += self.weights[i][j] * state[j];
+            for (j, &state_value) in state.iter().enumerate() {
+                sum += self.weights[i][j] * state_value;
             }
-            action[i] = sum;
+            *action_value = sum;
         }
 
         action

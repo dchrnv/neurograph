@@ -738,8 +738,6 @@ impl ExperienceStream {
                     .collect();
 
                 // Similar weighted sampling as PrioritizedByReward
-                let total_weight: f64 = indices_with_weight.iter().map(|(_, w)| w).sum();
-
                 let mut selected = Vec::with_capacity(sample_size);
                 let mut remaining = indices_with_weight;
 

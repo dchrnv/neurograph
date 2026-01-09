@@ -405,12 +405,12 @@ impl BootstrapLibrary {
 
             // Project: coords = centered @ components.T
             let mut coords = [0.0f32; 3];
-            for i in 0..pca_model.target_dim {
+            for (i, coord) in coords.iter_mut().enumerate().take(pca_model.target_dim) {
                 let mut sum = 0.0f32;
                 for j in 0..pca_model.original_dim {
                     sum += centered[j] * pca_model.components[[i, j]];
                 }
-                coords[i] = sum;
+                *coord = sum;
             }
 
             concept.coords = coords;

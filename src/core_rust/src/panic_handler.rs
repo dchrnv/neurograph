@@ -155,11 +155,9 @@ fn extract_panic_message(payload: &Box<dyn std::any::Any + Send>) -> String {
 /// ```rust
 /// use neurograph_core::panic_handler::install_panic_hook;
 ///
-/// fn main() {
-///     install_panic_hook();
+/// install_panic_hook();
 ///
-///     // Application code...
-/// }
+/// // Application code...
 /// ```
 pub fn install_panic_hook() {
     panic::set_hook(Box::new(|panic_info| {
