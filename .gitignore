@@ -59,6 +59,10 @@ build/
 dist/
 *.egg-info/
 
+# Sphinx documentation
+docs/build/
+docs/source/_build/
+
 # Rust
 target/
 Cargo.lock

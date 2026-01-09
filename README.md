@@ -2,7 +2,7 @@
 
 > High-performance cognitive platform with Rust Core, WebSocket API, and Jupyter integration
 
-[![Version](https://img.shields.io/badge/version-0.63.1-blue.svg)](https://github.com/dchrnv/neurograph)
+[![Version](https://img.shields.io/badge/version-0.65.0-blue.svg)](https://github.com/dchrnv/neurograph)
 [![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
 [![Rust](https://img.shields.io/badge/rust-2021-orange.svg)](https://www.rust-lang.org/)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
