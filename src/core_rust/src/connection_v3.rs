@@ -46,7 +46,6 @@
 /// - _padding1: 2 bytes (alignment)
 /// - source_id: 4 bytes (u32, 0=manual, >0=IntuitionEngine proposal ID)
 /// - reserved: 16 bytes (future extensions)
-
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Three-tier mutability system (synaptic plasticity analogy)
@@ -561,13 +560,13 @@ impl ConnectionV3 {
                 // Apply field change
                 match field {
                     ConnectionField::Confidence => {
-                        let conf_u8 = (*new_value * 255.0) as u8;
-                        if conf_u8 > 255 {
+                        if *new_value < 0.0 || *new_value > 1.0 {
                             return Err(ProposalError::InvalidValue {
                                 field: "confidence".to_string(),
                                 value: *new_value,
                             });
                         }
+                        let conf_u8 = (*new_value * 255.0) as u8;
                         self.confidence = conf_u8;
                         self.evidence_count = self.evidence_count.saturating_add(*evidence_count);
                     }

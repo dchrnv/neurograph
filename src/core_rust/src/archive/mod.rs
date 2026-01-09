@@ -19,7 +19,6 @@
 /// This module contains structures and utilities for archiving
 /// experiences in a compressed format for long-term storage
 /// and later replay/analysis.
-
 pub mod experience_token;
 
 pub use experience_token::{

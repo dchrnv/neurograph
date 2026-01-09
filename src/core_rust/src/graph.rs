@@ -41,7 +41,6 @@
 /// - edge_map: HashMap<EdgeId, EdgeInfo> - edge metadata
 ///
 /// Total memory: ~50 bytes per node + ~40 bytes per edge
-
 use std::collections::{HashMap, HashSet, VecDeque, BinaryHeap};
 use std::cmp::Ordering;
 

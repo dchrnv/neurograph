@@ -48,7 +48,6 @@
 /// // Dump to file (on panic or manually)
 /// bb.dump_to_file("crash_dump.json").unwrap();
 /// ```
-
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::fs::File;

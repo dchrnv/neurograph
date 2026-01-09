@@ -30,7 +30,6 @@
 /// - Binary-compatible format for cross-language interop
 /// - Python FFI bindings via PyO3 (optional)
 /// - Zero core dependencies (pure Rust)
-
 pub mod token;
 pub mod connection_v3;
 

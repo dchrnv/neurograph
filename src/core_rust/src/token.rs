@@ -27,7 +27,6 @@
 /// - field_radius: 1 byte (u8)
 /// - field_strength: 1 byte (u8)
 /// - timestamp: 4 bytes (u32)
-
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Coordinate space identifiers

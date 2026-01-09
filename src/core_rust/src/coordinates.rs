@@ -25,7 +25,6 @@
 /// - `state: [f32; 8]` in ExperienceEvent maps to L1-L8 coordinates
 /// - `action: [f32; 8]` represents actions in the same 8D space
 /// - All coordinates normalized to [0.0, 1.0] except L7 Valence [-1.0, 1.0]
-
 use crate::experience_stream::ExperienceEvent;
 
 /// L1-L8 Coordinate indices in state[]/action[] arrays

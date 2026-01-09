@@ -31,7 +31,6 @@
 /// log_operation_start("token_creation", "Creating batch of 1000 tokens");
 /// log_operation_complete("token_creation", 1.5, "success");
 /// ```
-
 use tracing::{info, warn, error};
 use tracing_subscriber::{self, EnvFilter};
 

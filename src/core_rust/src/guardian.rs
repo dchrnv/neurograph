@@ -37,7 +37,6 @@
 /// - **Delegation**: Modules validate their own frequent operations
 /// - **Transparency**: All actions are logged and tracked
 /// - **Immutability**: CDNA changes are versioned and reversible
-
 use crate::cdna::{CDNA, ProfileId};
 use crate::{Token, Connection, ConnectionV3};
 use std::collections::{HashMap, VecDeque};
