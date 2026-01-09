@@ -435,7 +435,7 @@ impl IntuitionEngine {
 
             state_action_rewards
                 .entry((state_bin, action))
-                .or_insert_with(Vec::new)
+                .or_default()
                 .push(total_reward);
         }
 
@@ -444,7 +444,7 @@ impl IntuitionEngine {
         for (state_bin, action) in state_action_rewards.keys() {
             state_bins_with_actions
                 .entry(*state_bin)
-                .or_insert_with(Vec::new)
+                .or_default()
                 .push(*action);
         }
 

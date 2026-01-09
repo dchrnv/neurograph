@@ -493,7 +493,7 @@ impl AssociativeMemory {
     pub fn insert(&self, hash: u64, connection_id: u64) {
         self.memory
             .entry(hash)
-            .or_insert_with(SmallVec::new)
+            .or_default()
             .push(connection_id);
 
         // Update stats

@@ -105,7 +105,7 @@ impl SpatialIndex {
         let key = BucketKey::from_coords(x, y, z, self.bucket_size);
         self.buckets
             .entry(key)
-            .or_insert_with(Vec::new)
+            .or_default()
             .push(token_id);
     }
 

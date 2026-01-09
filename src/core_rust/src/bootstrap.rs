@@ -1083,7 +1083,7 @@ impl BootstrapLibrary {
             let results = self.semantic_search(query, max_results * 2, Some(3))?;  // max_depth = 3
 
             for (word, score) in results {
-                all_results.entry(word).or_insert_with(Vec::new).push(score);
+                all_results.entry(word).or_default().push(score);
             }
         }
 
