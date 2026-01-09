@@ -82,14 +82,7 @@ impl ModuleId {
 
     /// Есть ли у модуля конфигурация?
     pub fn is_configurable(&self) -> bool {
-        match self {
-            Self::IntuitionEngine => true,
-            Self::SignalSystem => true,
-            Self::Gateway => true,
-            Self::Guardian => true,
-            Self::Cdna => true,
-            _ => false,
-        }
+        matches!(self, Self::IntuitionEngine | Self::SignalSystem | Self::Gateway | Self::Guardian | Self::Cdna)
     }
 
     /// Требует ли предупреждения при отключении?
