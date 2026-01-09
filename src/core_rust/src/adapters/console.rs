@@ -87,7 +87,7 @@ impl OutputAdapter for ConsoleOutputAdapter {
             ));
         }
 
-        output.push_str("\n");
+        output.push('\n');
 
         Ok(FormattedOutput::text(output))
     }

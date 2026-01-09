@@ -424,7 +424,7 @@ impl CDNA {
 
         // Hash all bytes except checksum field (offset 40-47)
         for (i, &byte) in bytes.iter().enumerate() {
-            if i >= 40 && i < 48 {
+            if (40..48).contains(&i) {
                 continue; // Skip checksum field
             }
             hash ^= byte as u64;

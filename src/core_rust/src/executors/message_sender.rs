@@ -26,6 +26,12 @@ use std::time::Instant;
 /// Sends messages to stdout with optional priority levels.
 pub struct MessageSenderExecutor;
 
+impl Default for MessageSenderExecutor {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MessageSenderExecutor {
     pub fn new() -> Self {
         Self

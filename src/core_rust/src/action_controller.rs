@@ -631,7 +631,7 @@ impl ActionController {
                     if confidence_u8 >= self.arbiter_config.reflex_confidence_threshold {
                         // Guardian validation (optional)
                         if let Some(ref guardian) = self.guardian {
-                            if let Err(_) = guardian.validate_reflex(&connection) {
+                            if guardian.validate_reflex(&connection).is_err() {
                                 // Guardian rejected: fallback to Slow Path
                                 self.arbiter_stats.write().record_guardian_rejection();
                                 drop(intuition);

@@ -26,6 +26,12 @@ use std::time::Instant;
 /// Useful for testing ActionController without side effects.
 pub struct NoOpExecutor;
 
+impl Default for NoOpExecutor {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl NoOpExecutor {
     pub fn new() -> Self {
         Self

@@ -644,11 +644,7 @@ impl ExperienceStream {
         }
 
         // Get start sequence for available events
-        let start_seq = if total > available as u64 {
-            total - available as u64
-        } else {
-            0
-        };
+        let start_seq = total.saturating_sub(available as u64);
 
         // Collect all available events
         let all_events: Vec<_> = (start_seq..total)

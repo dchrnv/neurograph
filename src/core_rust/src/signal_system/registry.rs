@@ -159,8 +159,7 @@ impl EventTypeRegistry {
         }
 
         // Wildcard: "prefix.*"
-        if pattern.ends_with(".*") {
-            let prefix = &pattern[..pattern.len() - 2];
+        if let Some(prefix) = pattern.strip_suffix(".*") {
             return type_str.starts_with(prefix);
         }
 

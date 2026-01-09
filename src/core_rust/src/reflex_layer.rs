@@ -120,11 +120,9 @@ impl ShiftConfig {
         }
 
         // Increase per-dimension overrides
-        for shift_opt in &mut self.per_dimension {
-            if let Some(shift) = shift_opt {
-                if *shift < 12 {
-                    *shift += 1;
-                }
+        for shift in self.per_dimension.iter_mut().flatten() {
+            if *shift < 12 {
+                *shift += 1;
             }
         }
     }
@@ -140,11 +138,9 @@ impl ShiftConfig {
         }
 
         // Decrease per-dimension overrides
-        for shift_opt in &mut self.per_dimension {
-            if let Some(shift) = shift_opt {
-                if *shift > 2 {
-                    *shift -= 1;
-                }
+        for shift in self.per_dimension.iter_mut().flatten() {
+            if *shift > 2 {
+                *shift -= 1;
             }
         }
     }

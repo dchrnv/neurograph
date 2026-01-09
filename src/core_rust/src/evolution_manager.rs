@@ -75,6 +75,12 @@ pub struct ADNAState {
     policies: RwLock<HashMap<String, ActionPolicy>>,
 }
 
+impl Default for ADNAState {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ADNAState {
     pub fn new() -> Self {
         Self {

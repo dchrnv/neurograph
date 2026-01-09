@@ -690,34 +690,31 @@ pub mod guardian_validation {
                 field, new_value, ..
             } => {
                 // Check pull_strength range (CDNA typical: -10.0 to +10.0)
-                if matches!(field, ConnectionField::PullStrength) {
-                    if new_value.abs() > 10.0 {
+                if matches!(field, ConnectionField::PullStrength)
+                    && new_value.abs() > 10.0 {
                         return Err(format!(
                             "Pull strength {} exceeds CDNA limit ±10.0",
                             new_value
                         ));
                     }
-                }
 
                 // Check preferred_distance range (CDNA typical: 0.01 to 100.0)
-                if matches!(field, ConnectionField::PreferredDistance) {
-                    if *new_value < 0.01 || *new_value > 100.0 {
+                if matches!(field, ConnectionField::PreferredDistance)
+                    && (*new_value < 0.01 || *new_value > 100.0) {
                         return Err(format!(
                             "Preferred distance {} outside CDNA range 0.01-100.0",
                             new_value
                         ));
                     }
-                }
 
                 // Check confidence bounds
-                if matches!(field, ConnectionField::Confidence) {
-                    if *new_value < 0.0 || *new_value > 1.0 {
+                if matches!(field, ConnectionField::Confidence)
+                    && (*new_value < 0.0 || *new_value > 1.0) {
                         return Err(format!(
                             "Confidence {} outside valid range 0.0-1.0",
                             new_value
                         ));
                     }
-                }
 
                 Ok(())
             }
@@ -869,6 +866,12 @@ pub mod learning_stats {
         pub temporal_cooccurrences: u32,
         /// Average time delta (for temporal connections)
         pub avg_time_delta_ms: i64,
+    }
+
+    impl Default for ConnectionLearningStats {
+        fn default() -> Self {
+            Self::new()
+        }
     }
 
     impl ConnectionLearningStats {

@@ -125,6 +125,12 @@ pub struct SamplingContext {
     pub parent_sampled: Option<bool>,
 }
 
+impl Default for SamplingContext {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SamplingContext {
     /// Create new sampling context for an operation
     pub fn new() -> Self {

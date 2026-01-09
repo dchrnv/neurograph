@@ -172,7 +172,7 @@ impl ActionExecutor for SignalExecutor {
 
     fn validate_params(&self, params: &Value) -> Result<(), String> {
         // Validate source_id is present
-        if !params.get("source_id").is_some() {
+        if params.get("source_id").is_none() {
             return Err("Missing required parameter: source_id".to_string());
         }
 
@@ -192,7 +192,7 @@ impl ActionExecutor for SignalExecutor {
 
         if let Some(Value::Number(n)) = params.get("decay_rate") {
             let rate = n.as_f64().unwrap_or(0.0);
-            if rate < 0.0 || rate > 1.0 {
+            if !(0.0..=1.0).contains(&rate) {
                 return Err("decay_rate must be in [0.0, 1.0]".to_string());
             }
         }

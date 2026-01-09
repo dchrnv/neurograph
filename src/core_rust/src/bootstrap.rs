@@ -488,7 +488,7 @@ impl BootstrapLibrary {
                 0.0, 0.0, 0.0, 0.0, 0.0, // Fill remaining with zeros
             ]);
 
-            if let Ok(_) = self.grid.add(token) {
+            if self.grid.add(token).is_ok() {
                 added += 1;
             }
         }
@@ -529,7 +529,7 @@ impl BootstrapLibrary {
             );
 
             // Create edges to neighbors
-            for (_i, &(neighbor_id, distance)) in neighbors.iter().enumerate() {
+            for &(neighbor_id, distance) in neighbors.iter() {
                 // Skip self
                 if neighbor_id == concept.id {
                     continue;
@@ -542,14 +542,14 @@ impl BootstrapLibrary {
                 // Create bidirectional edge
                 let edge_id = crate::Graph::compute_edge_id(concept.id, neighbor_id, 0);
 
-                if let Ok(_) = self.graph.add_edge(
+                if self.graph.add_edge(
                     edge_id,
                     concept.id,
                     neighbor_id,
                     0, // layer
                     weight,
                     false, // not directed
-                ) {
+                ).is_ok() {
                     edges_created += 1;
                 }
             }
@@ -1016,14 +1016,10 @@ impl BootstrapLibrary {
         let query_id = query_concept.id;
 
         // Create SignalConfig with custom max_depth if specified
-        let config = if let Some(depth) = max_depth {
-            Some(crate::SignalConfig {
+        let config = max_depth.map(|depth| crate::SignalConfig {
                 max_depth: depth,
                 ..Default::default()
-            })
-        } else {
-            None  // Use default config (max_depth: 5)
-        };
+            });
 
         // Run spreading activation from query node
         let result = self.graph.spreading_activation(

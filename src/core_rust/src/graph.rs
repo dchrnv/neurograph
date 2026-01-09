@@ -119,6 +119,12 @@ pub struct Subgraph {
     pub edges: HashSet<EdgeId>,
 }
 
+impl Default for Subgraph {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Subgraph {
     /// Create empty subgraph
     pub fn new() -> Self {
@@ -624,7 +630,7 @@ impl Graph {
                 let out = self.adjacency_out.get(&node_id).map_or(0, |e| e.len());
                 let in_count = self.adjacency_in.get(&node_id).map_or(0, |edges| {
                     edges.iter().filter(|&&e| {
-                        self.edge_map.get(&e).map_or(false, |info| info.bidirectional)
+                        self.edge_map.get(&e).is_some_and(|info| info.bidirectional)
                     }).count()
                 });
                 out + in_count
