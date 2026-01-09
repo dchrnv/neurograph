@@ -156,6 +156,15 @@ app.websocket("/ws")(websocket_endpoint)
 # Global exception handler (fallback - middleware should catch most)
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc: Exception):
+    """Global exception handler for unhandled errors.
+
+    Args:
+        request: The FastAPI request object.
+        exc: The exception that was raised.
+
+    Returns:
+        JSONResponse with error details (sanitized in production).
+    """
     logger.exception(
         "Global exception handler triggered",
         extra={
@@ -176,6 +185,11 @@ async def global_exception_handler(request, exc: Exception):
 # Startup event
 @app.on_event("startup")
 async def startup_event():
+    """Application startup handler.
+
+    Initializes logging, WebSocket integration, and other resources.
+    Called automatically when the FastAPI application starts.
+    """
     logger.info("NeuroGraph API starting up...")
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"CORS origins: {settings.CORS_ORIGINS}")
@@ -188,6 +202,11 @@ async def startup_event():
 # Shutdown event
 @app.on_event("shutdown")
 async def shutdown_event():
+    """Application shutdown handler.
+
+    Cleans up resources, stops WebSocket integration, and performs graceful shutdown.
+    Called automatically when the FastAPI application is stopping.
+    """
     logger.info("NeuroGraph API shutting down...")
 
     # Stop WebSocket integration (v0.60.0)
@@ -199,6 +218,11 @@ async def shutdown_event():
 # Root endpoint
 @app.get("/", include_in_schema=False)
 async def root():
+    """Root endpoint providing API information.
+
+    Returns:
+        Dictionary with API metadata including version, features, and documentation links.
+    """
     return {
         "name": "NeuroGraph API",
         "version": "1.0.0 (v0.49.0)",

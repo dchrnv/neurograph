@@ -75,10 +75,28 @@ class InMemoryTokenStorage(TokenStorageInterface):
         self._initialized = True
 
     def get(self, token_id: int) -> Optional[Token]:
+        """Retrieve a token by its ID.
+
+        Args:
+            token_id: The unique identifier of the token.
+
+        Returns:
+            The Token object if found, None otherwise.
+        """
         with self._lock:
             return self._storage.get(token_id)
 
     def create(self, token_data: Dict[str, Any]) -> Token:
+        """Create a new token from provided data.
+
+        Args:
+            token_data: Dictionary containing token properties including entity_type,
+                       domain, weight, field_radius, field_strength, persistent flag,
+                       and coordinates for all 8 levels.
+
+        Returns:
+            The newly created Token object.
+        """
         with self._lock:
             # Extract parameters
             entity_type = token_data.get('entity_type', 0)
@@ -117,6 +135,16 @@ class InMemoryTokenStorage(TokenStorageInterface):
             return token
 
     def update(self, token_id: int, token_data: Dict[str, Any]) -> Optional[Token]:
+        """Update an existing token with new data.
+
+        Args:
+            token_id: The unique identifier of the token to update.
+            token_data: Dictionary containing fields to update (weight, field_radius,
+                       field_strength, and/or coordinates).
+
+        Returns:
+            The updated Token object if found, None if token doesn't exist.
+        """
         with self._lock:
             token = self._storage.get(token_id)
             if not token:
@@ -144,6 +172,14 @@ class InMemoryTokenStorage(TokenStorageInterface):
             return token
 
     def delete(self, token_id: int) -> bool:
+        """Delete a token from storage.
+
+        Args:
+            token_id: The unique identifier of the token to delete.
+
+        Returns:
+            True if token was deleted, False if token was not found.
+        """
         with self._lock:
             if token_id in self._storage:
                 del self._storage[token_id]
@@ -151,6 +187,15 @@ class InMemoryTokenStorage(TokenStorageInterface):
             return False
 
     def list(self, limit: int = 100, offset: int = 0) -> List[Token]:
+        """List tokens with pagination support.
+
+        Args:
+            limit: Maximum number of tokens to return. Use 0 to return all tokens.
+            offset: Number of tokens to skip from the beginning.
+
+        Returns:
+            List of Token objects.
+        """
         with self._lock:
             tokens = list(self._storage.values())
             if limit == 0:  # Special case: return all for counting
@@ -158,6 +203,11 @@ class InMemoryTokenStorage(TokenStorageInterface):
             return tokens[offset:offset + limit]
 
     def clear(self) -> int:
+        """Clear all tokens from storage.
+
+        Returns:
+            Number of tokens that were removed.
+        """
         with self._lock:
             count = len(self._storage)
             self._storage.clear()
@@ -165,6 +215,11 @@ class InMemoryTokenStorage(TokenStorageInterface):
             return count
 
     def count(self) -> int:
+        """Get the total number of tokens in storage.
+
+        Returns:
+            Total count of stored tokens.
+        """
         with self._lock:
             return len(self._storage)
 
@@ -197,6 +252,18 @@ class InMemoryGridStorage(GridStorageInterface):
         self._initialized = True
 
     def create_grid(self, config: Optional[Dict[str, Any]] = None) -> int:
+        """Create a new spatial grid for token indexing.
+
+        Args:
+            config: Optional grid configuration including bucket_size, density_threshold,
+                   and min_field_nodes.
+
+        Returns:
+            The unique grid ID.
+
+        Raises:
+            RuntimeError: If Rust Grid bindings are not available.
+        """
         if not GRID_AVAILABLE:
             raise RuntimeError("Grid not available. Install Rust bindings.")
 
@@ -217,10 +284,26 @@ class InMemoryGridStorage(GridStorageInterface):
             return grid_id
 
     def get_grid(self, grid_id: int) -> Optional[Any]:
+        """Retrieve a grid by its ID.
+
+        Args:
+            grid_id: The unique identifier of the grid.
+
+        Returns:
+            The Grid object if found, None otherwise.
+        """
         with self._lock:
             return self._grids.get(grid_id)
 
     def delete_grid(self, grid_id: int) -> bool:
+        """Delete a grid from storage.
+
+        Args:
+            grid_id: The unique identifier of the grid to delete.
+
+        Returns:
+            True if grid was deleted, False if grid was not found.
+        """
         with self._lock:
             if grid_id in self._grids:
                 del self._grids[grid_id]
@@ -228,10 +311,27 @@ class InMemoryGridStorage(GridStorageInterface):
             return False
 
     def list_grids(self) -> List[int]:
+        """List all grid IDs.
+
+        Returns:
+            List of all grid IDs currently in storage.
+        """
         with self._lock:
             return list(self._grids.keys())
 
     def add_token(self, grid_id: int, token: Token) -> bool:
+        """Add a token to a grid for spatial indexing.
+
+        Args:
+            grid_id: The grid to add the token to.
+            token: The Token object to add (will be converted to Rust Token).
+
+        Returns:
+            True if token was added successfully, False if grid not found.
+
+        Raises:
+            RuntimeError: If Rust Grid bindings are not available.
+        """
         if not GRID_AVAILABLE:
             raise RuntimeError("Grid not available.")
 
@@ -271,6 +371,15 @@ class InMemoryGridStorage(GridStorageInterface):
             return True
 
     def remove_token(self, grid_id: int, token_id: int) -> bool:
+        """Remove a token from a grid.
+
+        Args:
+            grid_id: The grid to remove the token from.
+            token_id: The unique identifier of the token to remove.
+
+        Returns:
+            True if token was removed, False if grid or token not found.
+        """
         with self._lock:
             grid = self._grids.get(grid_id)
             if not grid:
@@ -282,6 +391,18 @@ class InMemoryGridStorage(GridStorageInterface):
     def find_neighbors(
         self, grid_id: int, token_id: int, space: int, radius: float, max_results: int
     ) -> List[Tuple[int, float]]:
+        """Find neighboring tokens within a radius around a token.
+
+        Args:
+            grid_id: The grid to search in.
+            token_id: The token to find neighbors around.
+            space: The coordinate space (0-7) to search in.
+            radius: The search radius.
+            max_results: Maximum number of neighbors to return.
+
+        Returns:
+            List of (token_id, distance) tuples, sorted by distance.
+        """
         with self._lock:
             grid = self._grids.get(grid_id)
             if not grid:
@@ -292,6 +413,19 @@ class InMemoryGridStorage(GridStorageInterface):
     def range_query(
         self, grid_id: int, space: int, x: float, y: float, z: float, radius: float
     ) -> List[Tuple[int, float]]:
+        """Find all tokens within a radius around a coordinate point.
+
+        Args:
+            grid_id: The grid to search in.
+            space: The coordinate space (0-7) to search in.
+            x: X coordinate of the center point.
+            y: Y coordinate of the center point.
+            z: Z coordinate of the center point.
+            radius: The search radius.
+
+        Returns:
+            List of (token_id, distance) tuples, sorted by distance.
+        """
         with self._lock:
             grid = self._grids.get(grid_id)
             if not grid:
@@ -302,6 +436,19 @@ class InMemoryGridStorage(GridStorageInterface):
     def calculate_field_influence(
         self, grid_id: int, space: int, x: float, y: float, z: float, radius: float
     ) -> float:
+        """Calculate the cumulative field influence at a point.
+
+        Args:
+            grid_id: The grid to calculate in.
+            space: The coordinate space (0-7) to calculate in.
+            x: X coordinate of the point.
+            y: Y coordinate of the point.
+            z: Z coordinate of the point.
+            radius: The search radius for nearby tokens.
+
+        Returns:
+            The total field influence value at the point.
+        """
         with self._lock:
             grid = self._grids.get(grid_id)
             if not grid:
@@ -312,6 +459,19 @@ class InMemoryGridStorage(GridStorageInterface):
     def calculate_density(
         self, grid_id: int, space: int, x: float, y: float, z: float, radius: float
     ) -> float:
+        """Calculate the token density at a point.
+
+        Args:
+            grid_id: The grid to calculate in.
+            space: The coordinate space (0-7) to calculate in.
+            x: X coordinate of the point.
+            y: Y coordinate of the point.
+            z: Z coordinate of the point.
+            radius: The search radius for counting nearby tokens.
+
+        Returns:
+            The token density value at the point.
+        """
         with self._lock:
             grid = self._grids.get(grid_id)
             if not grid:
@@ -396,10 +556,23 @@ class InMemoryCDNAStorage(CDNAStorageInterface):
         self._initialized = True
 
     def get_config(self) -> Dict[str, Any]:
+        """Get the current CDNA configuration.
+
+        Returns:
+            Dictionary containing version, profile, dimension_scales, and timestamp.
+        """
         with self._lock:
             return self._config.copy()
 
     def update_config(self, config: Dict[str, Any]) -> bool:
+        """Update CDNA configuration parameters.
+
+        Args:
+            config: Dictionary containing profile and/or dimension_scales to update.
+
+        Returns:
+            True if update was successful.
+        """
         with self._lock:
             if 'profile' in config:
                 self._config['profile'] = config['profile']
@@ -409,12 +582,33 @@ class InMemoryCDNAStorage(CDNAStorageInterface):
             return True
 
     def get_profile(self, profile_id: str) -> Optional[Dict[str, Any]]:
+        """Get a CDNA profile by ID.
+
+        Args:
+            profile_id: The profile identifier (explorer, analyzer, creative, quarantine).
+
+        Returns:
+            Profile configuration dictionary if found, None otherwise.
+        """
         return self.PROFILES.get(profile_id)
 
     def list_profiles(self) -> Dict[str, Dict[str, Any]]:
+        """Get all available CDNA profiles.
+
+        Returns:
+            Dictionary mapping profile IDs to their configurations.
+        """
         return self.PROFILES.copy()
 
     def switch_profile(self, profile_id: str) -> bool:
+        """Switch to a different CDNA profile.
+
+        Args:
+            profile_id: The profile to switch to (explorer, analyzer, creative, quarantine).
+
+        Returns:
+            True if profile was switched successfully, False if profile doesn't exist.
+        """
         with self._lock:
             if profile_id not in self.PROFILES:
                 return False
@@ -426,15 +620,39 @@ class InMemoryCDNAStorage(CDNAStorageInterface):
             return True
 
     def get_history(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """Get CDNA configuration change history.
+
+        Args:
+            limit: Maximum number of history entries to return.
+
+        Returns:
+            List of history entries, most recent first.
+        """
         with self._lock:
             return self._history[:limit]
 
     def add_history(self, entry: Dict[str, Any]) -> None:
+        """Add a new entry to the configuration history.
+
+        Args:
+            entry: History entry dictionary (timestamp will be added automatically).
+        """
         with self._lock:
             entry['timestamp'] = datetime.now().isoformat()
             self._history.insert(0, entry)
 
     def validate_scales(self, scales: List[float]) -> Tuple[bool, List[str], List[str]]:
+        """Validate dimension scales against safety limits.
+
+        Args:
+            scales: List of 8 dimension scale values to validate.
+
+        Returns:
+            Tuple of (is_valid, warnings, errors) where:
+            - is_valid: True if no errors were found
+            - warnings: List of warning messages for caution/danger zones
+            - errors: List of error messages for out-of-range values
+        """
         warnings = []
         errors = []
 
@@ -455,10 +673,20 @@ class InMemoryCDNAStorage(CDNAStorageInterface):
         return (len(errors) == 0, warnings, errors)
 
     def get_quarantine_status(self) -> Dict[str, Any]:
+        """Get the current quarantine mode status.
+
+        Returns:
+            Dictionary containing active status, time_left, and metrics.
+        """
         with self._lock:
             return self._quarantine.copy()
 
     def start_quarantine(self) -> bool:
+        """Start quarantine mode for experimental changes.
+
+        Returns:
+            True if quarantine was started, False if already active.
+        """
         with self._lock:
             if self._quarantine["active"]:
                 return False
@@ -473,6 +701,14 @@ class InMemoryCDNAStorage(CDNAStorageInterface):
             return True
 
     def stop_quarantine(self, apply: bool = False) -> bool:
+        """Stop quarantine mode and optionally apply changes.
+
+        Args:
+            apply: If True, record the quarantine results in history.
+
+        Returns:
+            True if quarantine was stopped, False if not active.
+        """
         with self._lock:
             if not self._quarantine["active"]:
                 return False
@@ -522,14 +758,22 @@ def get_memory_cdna_storage() -> InMemoryCDNAStorage:
 
 
 def initialize_memory_storage() -> None:
-    """Initialize all storage singletons."""
+    """Initialize all storage singletons.
+
+    This function ensures all storage instances are created and ready for use.
+    Call this during application startup.
+    """
     get_memory_token_storage()
     get_memory_grid_storage()
     get_memory_cdna_storage()
 
 
 def cleanup_memory_storage() -> None:
-    """Cleanup storage (for shutdown)."""
+    """Cleanup storage (for shutdown).
+
+    Clears all tokens and releases storage singleton references.
+    Call this during application shutdown.
+    """
     global _token_storage, _grid_storage, _cdna_storage
     if _token_storage:
         _token_storage.clear()
@@ -539,5 +783,9 @@ def cleanup_memory_storage() -> None:
 
 
 def is_grid_available() -> bool:
-    """Check if Rust Grid is available."""
+    """Check if Rust Grid is available.
+
+    Returns:
+        True if Rust Grid bindings were successfully imported, False otherwise.
+    """
     return GRID_AVAILABLE
