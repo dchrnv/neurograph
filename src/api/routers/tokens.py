@@ -72,7 +72,7 @@ def token_to_response(token: Token) -> TokenResponse:
 
 def create_request_to_dict(request: TokenCreateRequest) -> Dict[str, Any]:
     """Convert TokenCreateRequest to storage dict."""
-    data = {
+    data: Dict[str, Any] = {
         'entity_type': request.entity_type,
         'domain': request.domain,
         'weight': request.weight,
@@ -102,7 +102,7 @@ def create_request_to_dict(request: TokenCreateRequest) -> Dict[str, Any]:
 
 def update_request_to_dict(request: TokenUpdateRequest) -> Dict[str, Any]:
     """Convert TokenUpdateRequest to storage dict."""
-    data = {}
+    data: Dict[str, Any] = {}
 
     if request.weight is not None:
         data['weight'] = request.weight

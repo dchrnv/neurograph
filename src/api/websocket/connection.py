@@ -280,7 +280,7 @@ async def _handle_message(client_id: str, message: dict, user_role: Optional[str
         message: Parsed message dictionary
         user_role: User's role for permission checking
     """
-    message_type = message.get("type")
+    message_type = message.get("type", "unknown")
 
     # Check rate limit
     allowed, retry_after = rate_limiter.check_rate_limit(client_id, message_type)
@@ -382,11 +382,11 @@ async def _handle_message(client_id: str, message: dict, user_role: Optional[str
 
     elif message_type == "get_subscriptions":
         # Get current subscriptions
-        subscriptions = list(connection_manager.get_subscriptions(client_id))
+        subscriptions_list = list(connection_manager.get_subscriptions(client_id))
         await connection_manager.send_personal(
             {
                 "type": "subscriptions",
-                "channels": subscriptions,
+                "channels": subscriptions_list,
                 "timestamp": datetime.utcnow().isoformat()
             },
             client_id
@@ -407,7 +407,7 @@ async def _handle_message(client_id: str, message: dict, user_role: Optional[str
             )
             return
 
-        subscriptions = list(connection_manager.get_subscriptions(client_id))
+        subscriptions = set(connection_manager.get_subscriptions(client_id))
         metadata = {"role": user_role}
 
         try:

@@ -181,7 +181,7 @@ async def update_cdna_config(
                     )
 
         # Build update dict
-        update_data = {}
+        update_data: Dict[str, Any] = {}
         if request.profile:
             update_data["profile"] = request.profile
             # Get profile scales

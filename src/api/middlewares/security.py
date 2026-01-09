@@ -105,10 +105,10 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         """Check request size before processing."""
         # Check Content-Length header
-        content_length = request.headers.get("content-length")
+        content_length_str = request.headers.get("content-length")
 
-        if content_length:
-            content_length = int(content_length)
+        if content_length_str:
+            content_length = int(content_length_str)
 
             if content_length > self.max_body_size:
                 logger.warning(

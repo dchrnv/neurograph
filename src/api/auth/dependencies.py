@@ -233,17 +233,17 @@ async def get_user_jwt_or_api_key(
     # Try JWT first
     if credentials:
         try:
-            user = await get_current_user(credentials)
-            if user and not user.disabled:
-                return user
+            jwt_user = await get_current_user(credentials)
+            if jwt_user and not jwt_user.disabled:
+                return jwt_user
         except HTTPException:
             pass  # Fall through to API key
 
     # Try API key
     if x_api_key:
-        user = await get_user_from_api_key(x_api_key)
-        if user and not user.disabled:
-            return user
+        api_user = await get_user_from_api_key(x_api_key)
+        if api_user and not api_user.disabled:
+            return api_user
 
     # Both failed
     raise HTTPException(

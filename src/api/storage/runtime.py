@@ -370,8 +370,8 @@ class RuntimeCDNAStorage(CDNAStorageInterface):
 
     def validate_scales(self, scales: List[float]) -> Tuple[bool, List[str], List[str]]:
         """Validate dimension scales using Runtime."""
-        warnings = []
-        errors = []
+        warnings: List[str] = []
+        errors: List[str] = []
 
         # Check count
         if len(scales) != 8:
