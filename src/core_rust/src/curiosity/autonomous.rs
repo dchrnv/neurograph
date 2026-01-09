@@ -2,7 +2,7 @@
 //
 // Background exploration loop for curiosity-driven discovery
 
-use crate::curiosity::{CuriosityDrive, ExplorationTarget, ExplorationMode};
+use crate::curiosity::{CuriosityDrive, ExplorationTarget};
 use crate::action_controller::ActionController;
 use std::sync::Arc;
 use std::time::Duration;

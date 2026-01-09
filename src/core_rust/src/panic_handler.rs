@@ -4,7 +4,7 @@
 // Provides panic recovery infrastructure for production resilience.
 
 use std::panic::{self, AssertUnwindSafe};
-use tracing::{error, warn};
+use tracing::error;
 
 /// Result type for panic-recoverable operations
 pub type PanicResult<T> = Result<T, PanicError>;

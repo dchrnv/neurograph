@@ -44,9 +44,9 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::sync::mpsc;
 use tokio::time::timeout;
-use tracing::{debug, error, info, warn};
+use tracing::{debug, error, info};
 
-use crate::wal::{WalEntry, WalEntryType, WalError, WalStats};
+use crate::wal::{WalEntry, WalError, WalStats};
 
 /// Configuration for async WAL writer
 #[derive(Debug, Clone)]
