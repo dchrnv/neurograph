@@ -31,17 +31,9 @@ pub struct ModuleMetrics {
 }
 
 /// Конфигурация модуля (generic)
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ModuleConfig {
     pub values: HashMap<String, serde_json::Value>,
-}
-
-impl Default for ModuleConfig {
-    fn default() -> Self {
-        Self {
-            values: HashMap::new(),
-        }
-    }
 }
 
 /// Информация о модуле

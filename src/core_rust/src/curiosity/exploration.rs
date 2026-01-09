@@ -26,18 +26,13 @@ pub enum ExplorationReason {
 }
 
 /// Priority level for exploration
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Serialize, Deserialize)]
 pub enum ExplorationPriority {
     Low = 1,
+    #[default]
     Medium = 2,
     High = 3,
     Critical = 4,
-}
-
-impl Default for ExplorationPriority {
-    fn default() -> Self {
-        Self::Medium
-    }
 }
 
 /// A target for exploration

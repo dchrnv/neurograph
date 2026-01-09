@@ -87,23 +87,12 @@ pub enum SignalType {
 }
 
 /// Metadata for processed signals
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProcessedMetadata {
     pub original_text: Option<String>,
     pub matched_tokens: Vec<(String, u32, f32)>, // (word, token_id, confidence)
     pub unknown_words: Vec<String>,
     pub processing_time_ns: u64,
-}
-
-impl Default for ProcessedMetadata {
-    fn default() -> Self {
-        Self {
-            original_text: None,
-            matched_tokens: Vec::new(),
-            unknown_words: Vec::new(),
-            processing_time_ns: 0,
-        }
-    }
 }
 
 /// Processed signal - what goes to ActionController

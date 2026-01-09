@@ -341,7 +341,7 @@ impl IntuitionEngine {
         }
 
         // 5. All checks passed - consolidate!
-        self.consolidate_reflex(state_token, connection.clone());
+        self.consolidate_reflex(state_token, *connection);
         true
     }
 

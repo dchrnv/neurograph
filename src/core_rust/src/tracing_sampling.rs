@@ -96,20 +96,15 @@ pub enum SamplingDecision {
 }
 
 /// Sampling priority from request headers
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SamplingPriority {
     /// Low priority (e.g., health checks) - reduced sampling
     Low,
     /// Normal priority - default sampling rate
+    #[default]
     Normal,
     /// High priority (e.g., important operations) - increased sampling
     High,
-}
-
-impl Default for SamplingPriority {
-    fn default() -> Self {
-        SamplingPriority::Normal
-    }
 }
 
 /// Context for making sampling decisions

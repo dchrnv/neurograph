@@ -148,12 +148,12 @@ impl RuntimeStorage {
 
         // Store token
         let mut tokens = self.tokens.write();
-        tokens.insert(id, token.clone());
+        tokens.insert(id, token);
         drop(tokens);
 
         // Add to grid (if has coordinates)
         let mut grid = self.grid.write();
-        let _ = grid.add(token.clone());
+        let _ = grid.add(token);
         drop(grid);
 
         // Add node to graph

@@ -203,20 +203,15 @@ impl Eq for DijkstraState {}
 // ============================================================================
 
 /// Accumulation mode for node activation energy
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum AccumulationMode {
     /// Energy accumulates (sum)
+    #[default]
     Sum,
     /// Take maximum energy
     Max,
     /// Weighted average based on activation count
     WeightedAverage,
-}
-
-impl Default for AccumulationMode {
-    fn default() -> Self {
-        AccumulationMode::Sum
-    }
 }
 
 /// Activation state of a node in the graph
@@ -310,7 +305,7 @@ impl SignalConfig {
 }
 
 /// Result of spreading activation algorithm
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ActivationResult {
     /// List of activated nodes with their energies
     pub activated_nodes: Vec<ActivatedNode>,
@@ -322,18 +317,6 @@ pub struct ActivationResult {
     pub execution_time_us: u64,
     /// Path with strongest activation (if any)
     pub strongest_path: Option<Path>,
-}
-
-impl Default for ActivationResult {
-    fn default() -> Self {
-        Self {
-            activated_nodes: Vec::new(),
-            nodes_visited: 0,
-            max_depth_reached: 0,
-            execution_time_us: 0,
-            strongest_path: None,
-        }
-    }
 }
 
 /// Single activated node with metadata

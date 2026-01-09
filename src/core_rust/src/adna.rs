@@ -425,23 +425,12 @@ impl Default for GoalDirectedParams {
 /// Complete appraiser configuration
 ///
 /// This structure holds all parameters for the 4 reward appraisers.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct AppraiserConfig {
     pub homeostasis: HomeostasisParams,
     pub curiosity: CuriosityParams,
     pub efficiency: EfficiencyParams,
     pub goal_directed: GoalDirectedParams,
-}
-
-impl Default for AppraiserConfig {
-    fn default() -> Self {
-        Self {
-            homeostasis: HomeostasisParams::default(),
-            curiosity: CuriosityParams::default(),
-            efficiency: EfficiencyParams::default(),
-            goal_directed: GoalDirectedParams::default(),
-        }
-    }
 }
 
 // ============================================================================

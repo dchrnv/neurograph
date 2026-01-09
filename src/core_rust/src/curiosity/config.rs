@@ -5,19 +5,14 @@
 use serde::{Deserialize, Serialize};
 
 /// Exploration mode for curiosity-driven behavior
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum ExplorationMode {
     /// Quiet mode - no REPL output during exploration
+    #[default]
     Quiet,
 
     /// Verbose mode - detailed exploration logging
     Verbose,
-}
-
-impl Default for ExplorationMode {
-    fn default() -> Self {
-        Self::Quiet
-    }
 }
 
 /// Configuration for CuriosityDrive system
