@@ -11,7 +11,7 @@ Version: v0.52.0
 
 import time
 import uuid
-from typing import Callable
+from typing import Any, Callable, Dict
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -215,7 +215,7 @@ class ErrorLoggingMiddleware(BaseHTTPMiddleware):
             )
 
             # Build error response
-            error_response = {
+            error_response: Dict[str, Any] = {
                 "success": False,
                 "error": {
                     "code": "INTERNAL_ERROR",

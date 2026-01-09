@@ -421,7 +421,7 @@ class InMemoryCDNAStorage(CDNAStorageInterface):
 
             profile = self.PROFILES[profile_id]
             self._config['profile'] = profile_id
-            self._config['dimension_scales'] = profile['scales'].copy()
+            self._config['dimension_scales'] = list(profile['scales'])  # type: ignore[call-overload]
             self._config['timestamp'] = datetime.now().isoformat()
             return True
 

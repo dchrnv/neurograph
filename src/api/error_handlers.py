@@ -117,7 +117,7 @@ async def generic_exception_handler(
                 "code": "INTERNAL_SERVER_ERROR",
                 "message": "An unexpected error occurred. Please try again later.",
                 "details": {
-                    "type": type(exc).__name__ if logger.level <= logging.DEBUG else None
+                    "type": type(exc).__name__ if logger.isEnabledFor(logging.DEBUG) else None
                 }
             }
         }

@@ -75,8 +75,8 @@ app = FastAPI(
 )
 
 # v0.58.0: Register exception handlers (order matters - specific to general)
-app.add_exception_handler(NeuroGraphException, neurograph_exception_handler)
-app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(NeuroGraphException, neurograph_exception_handler)  # type: ignore[arg-type]
+app.add_exception_handler(RequestValidationError, validation_exception_handler)  # type: ignore[arg-type]
 # Note: Generic handler registered separately at the bottom as @app.exception_handler decorator
 
 # v0.52.0 + v0.58.0: Observability and security middlewares (order matters!)
