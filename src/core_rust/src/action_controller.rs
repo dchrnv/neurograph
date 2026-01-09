@@ -943,8 +943,7 @@ impl ActionController {
     /// # Returns
     /// ActionIntent (may be exploratory or standard decision)
     pub fn act_with_curiosity(&self, state: [f32; 8]) -> crate::action_types::ActionIntent {
-        use crate::action_types::{ActionIntent, DecisionSource};
-        use crate::curiosity::{CuriosityContext, CuriosityScore};
+        use crate::curiosity::CuriosityContext;
 
         // Check if curiosity is available
         let curiosity = match &self.curiosity {

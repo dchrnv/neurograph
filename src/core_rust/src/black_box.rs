@@ -55,7 +55,7 @@ use std::io::Write;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
-use tracing::{debug, error, info};
+use tracing::{debug, info};
 
 /// Event types that can be recorded
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

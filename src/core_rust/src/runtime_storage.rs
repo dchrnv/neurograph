@@ -193,7 +193,7 @@ impl RuntimeStorage {
 
         // Update in storage
         let old_token = tokens.get(&id).cloned();
-        tokens.insert(id, token.clone());
+        tokens.insert(id, token);
         drop(tokens);
 
         // Update in grid (remove old, add new)
@@ -367,9 +367,8 @@ impl RuntimeStorage {
     /// Ok(()) if successful, Err if token not found
     pub fn add_to_grid(&self, token_id: u32) -> StorageResult<()> {
         let tokens = self.tokens.read();
-        let token = tokens.get(&token_id)
-            .ok_or(StorageError::TokenNotFound(token_id))?
-            .clone();
+        let token = *tokens.get(&token_id)
+            .ok_or(StorageError::TokenNotFound(token_id))?;
         drop(tokens);
 
         let mut grid = self.grid.write();
@@ -448,7 +447,7 @@ impl RuntimeStorage {
     /// Clone of current CDNA configuration
     pub fn get_cdna(&self) -> CDNA {
         let cdna = self.cdna.read();
-        cdna.clone()
+        *cdna
     }
 
     /// Update CDNA scales

@@ -1,5 +1,4 @@
 use crate::signal_system::{SignalEvent, EventTypeRegistry};
-use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
 /// Скомпилированный фильтр подписки

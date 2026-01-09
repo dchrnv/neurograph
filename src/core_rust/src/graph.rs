@@ -1200,7 +1200,7 @@ impl Graph {
         source_id: Option<NodeId>,
         config: &SignalConfig,
     ) {
-        let activation = self.activations.entry(node_id).or_insert_with(NodeActivation::default);
+        let activation = self.activations.entry(node_id).or_default();
 
         // Apply accumulation mode
         match config.accumulation_mode {

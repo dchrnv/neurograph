@@ -44,8 +44,8 @@
 /// ```
 use lazy_static::lazy_static;
 use prometheus::{
-    register_counter, register_gauge, register_histogram, register_int_counter, register_int_gauge,
-    Counter, Encoder, Gauge, Histogram, IntCounter, IntGauge, TextEncoder,
+    register_gauge, register_histogram, register_int_counter, register_int_gauge,
+    Encoder, Gauge, Histogram, IntCounter, IntGauge, TextEncoder,
 };
 
 // ==================== COUNTERS ====================
