@@ -176,14 +176,14 @@ class WebSocketMetricsCollector:
     """Helper class for collecting WebSocket metrics."""
 
     @staticmethod
-    def track_connection_opened(user_id: str = None):
+    def track_connection_opened(user_id: str | None = None):
         """Track new connection."""
         ws_connections_total.inc()
         if user_id:
             ws_connections_by_user.labels(user_id=user_id).inc()
 
     @staticmethod
-    def track_connection_closed(user_id: str = None, reason: str = "unknown"):
+    def track_connection_closed(user_id: str | None = None, reason: str = "unknown"):
         """Track connection closure."""
         ws_connections_total.dec()
         if user_id:

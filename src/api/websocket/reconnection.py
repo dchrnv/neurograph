@@ -23,7 +23,7 @@ Allows clients to seamlessly reconnect and restore their session state.
 
 import time
 import secrets
-from typing import Dict, Optional, Set
+from typing import Any, Dict, Optional, Set
 from dataclasses import dataclass, field
 from datetime import datetime
 
@@ -46,7 +46,7 @@ class ReconnectionSession:
     created_at: float
     expires_at: float
     subscriptions: Set[str] = field(default_factory=set)
-    metadata: Dict[str, any] = field(default_factory=dict)
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
     def is_expired(self) -> bool:
         """Check if session is expired."""

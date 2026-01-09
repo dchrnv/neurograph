@@ -242,13 +242,17 @@ class Token:
 
         # L7 has different scale for Z
         if level == 6:
-            return (
-                self._decode_coord(coords[0], 100),
-                self._decode_coord(coords[1], 100),
-                self._decode_coord(coords[2], 1000)
-            )
+            x = self._decode_coord(coords[0], 100)
+            y = self._decode_coord(coords[1], 100)
+            z = self._decode_coord(coords[2], 1000)
+            # coords[0] != COORD_UNDEFINED guarantees all coords are defined
+            assert x is not None and y is not None and z is not None
+            return (x, y, z)
         else:
-            return tuple(self._decode_coord(c, scale) for c in coords)
+            decoded = tuple(self._decode_coord(c, scale) for c in coords)
+            # coords[0] != COORD_UNDEFINED guarantees all coords are defined
+            assert all(v is not None for v in decoded)
+            return (decoded[0], decoded[1], decoded[2])  # type: ignore[return-value]
 
     def _encode_coord(self, value: Optional[float], scale: int) -> int:
         """Encode float coordinate to int16"""
