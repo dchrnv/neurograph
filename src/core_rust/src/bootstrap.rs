@@ -529,7 +529,7 @@ impl BootstrapLibrary {
             );
 
             // Create edges to neighbors
-            for (i, &(neighbor_id, distance)) in neighbors.iter().enumerate() {
+            for (_i, &(neighbor_id, distance)) in neighbors.iter().enumerate() {
                 // Skip self
                 if neighbor_id == concept.id {
                     continue;

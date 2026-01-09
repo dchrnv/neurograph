@@ -682,7 +682,7 @@ pub mod guardian_validation {
     /// This is a lightweight validation that checks basic constraints.
     /// Full Guardian integration would check against actual CDNA instance.
     pub fn validate_proposal(
-        connection: &ConnectionV3,
+        _connection: &ConnectionV3,
         proposal: &ConnectionProposal,
     ) -> Result<(), String> {
         match proposal {

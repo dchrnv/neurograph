@@ -527,7 +527,7 @@ impl IntuitionEngine {
         let mut bin_id: u64 = 0;
         let bins_per_dim = self.config.state_bins_per_dim as u64;
 
-        for (i, &value) in state.iter().enumerate() {
+        for (_i, &value) in state.iter().enumerate() {
             // Normalize value to [0, 1] assuming state values are roughly in [-1, 1]
             let normalized = ((value + 1.0) / 2.0).clamp(0.0, 0.999);
             let bin = (normalized * bins_per_dim as f32) as u64;

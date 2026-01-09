@@ -72,7 +72,7 @@ pub async fn handle_websocket(
 }
 
 /// Handle WebSocket connection
-async fn websocket_connection(socket: WebSocket, state: ApiState) {
+async fn websocket_connection(socket: WebSocket, _state: ApiState) {
     let (mut sender, mut receiver) = socket.split();
 
     // Create broadcast channel for events
@@ -97,7 +97,7 @@ async fn websocket_connection(socket: WebSocket, state: ApiState) {
                     let client_msg: Result<ClientMessage, _> = serde_json::from_str(&text);
 
                     match client_msg {
-                        Ok(ClientMessage::Query { query }) => {
+                        Ok(ClientMessage::Query { query: _ }) => {
                             // Handle query (simplified - full implementation would need async handling)
                             let response = ServerMessage::QueryResponse {
                                 data: QueryResponse {

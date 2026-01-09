@@ -567,7 +567,7 @@ impl ActionController {
     }
 
     /// Log action_started event
-    fn log_action_started(&self, intent: &Intent, executor_id: &str) {
+    fn log_action_started(&self, intent: &Intent, _executor_id: &str) {
         let mut event = ExperienceEvent::default();
         event.event_type = 1000; // action_started
         event.state = intent.state.map(|v| v as f32 / 32767.0); // Convert i16 to f32
@@ -577,7 +577,7 @@ impl ActionController {
     }
 
     /// Log action_finished event
-    fn log_action_finished(&self, intent: &Intent, executor_id: &str, result: &ActionResult) {
+    fn log_action_finished(&self, intent: &Intent, _executor_id: &str, result: &ActionResult) {
         let mut event = ExperienceEvent::default();
         event.event_type = 1001; // action_finished
         event.state = intent.state.map(|v| v as f32 / 32767.0);

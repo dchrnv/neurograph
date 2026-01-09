@@ -171,7 +171,7 @@ impl SignalSystem {
     }
 
     /// Обработать событие (базовая версия без Grid/Graph)
-    fn process_event(&self, event: &SignalEvent) -> ProcessingResult {
+    fn process_event(&self, _event: &SignalEvent) -> ProcessingResult {
         let start_us = current_time_us();
 
         // TODO: интеграция с Grid/Graph/Guardian в следующей версии

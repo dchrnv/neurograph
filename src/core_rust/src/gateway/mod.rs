@@ -149,7 +149,7 @@ impl Gateway {
             }
 
             InputSignal::DirectToken {
-                token_id,
+                token_id: _,
                 operation: _,
             } => {
                 {

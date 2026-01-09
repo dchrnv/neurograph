@@ -51,7 +51,7 @@ impl ProcessingResult {
     }
 
     /// Создаёт результат для ошибки валидации
-    pub fn validation_failed(reason: String) -> Self {
+    pub fn validation_failed(_reason: String) -> Self {
         Self {
             token_id: 0,
             neighbors: Vec::new(),
