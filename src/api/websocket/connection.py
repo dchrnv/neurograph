@@ -227,7 +227,7 @@ async def websocket_endpoint(
 
             # Create reconnection token before disconnecting
             if user_id:
-                subscriptions = list(connection_manager.get_subscriptions(client_id))
+                subscriptions = set(connection_manager.get_subscriptions(client_id))
                 metadata = {"role": user_role}
 
                 try:
