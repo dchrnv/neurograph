@@ -97,7 +97,7 @@ def get_accessible_channels(role: str) -> List[str]:
 
     for channel, permissions in CHANNEL_PERMISSIONS.items():
         if role in permissions and ChannelPermission.SUBSCRIBE in permissions[role]:
-            accessible.append(channel)
+            accessible.append(channel.value)  # Convert Channel enum to str
 
     return accessible
 
@@ -115,15 +115,17 @@ def can_subscribe(channel: str, role: Optional[str] = None) -> bool:
     """
     role = role or "anonymous"
 
-    # Check if channel exists
-    if channel not in CHANNEL_PERMISSIONS:
+    # Convert str to Channel enum
+    try:
+        channel_enum = Channel(channel)
+    except ValueError:
         logger.warning(
             f"Unknown channel: {channel}",
             extra={"event": "channel_permission_check", "channel": channel, "role": role}
         )
         return False
 
-    channel_perms = CHANNEL_PERMISSIONS[channel]
+    channel_perms = CHANNEL_PERMISSIONS[channel_enum]
 
     # Check if role has permission
     if role not in channel_perms:
@@ -168,11 +170,13 @@ def can_broadcast(channel: str, role: Optional[str] = None) -> bool:
     """
     role = role or "anonymous"
 
-    # Check if channel exists
-    if channel not in CHANNEL_PERMISSIONS:
+    # Convert str to Channel enum
+    try:
+        channel_enum = Channel(channel)
+    except ValueError:
         return False
 
-    channel_perms = CHANNEL_PERMISSIONS[channel]
+    channel_perms = CHANNEL_PERMISSIONS[channel_enum]
 
     # Check if role has permission
     if role not in channel_perms:
@@ -201,13 +205,15 @@ def filter_channels_by_permission(
     role = role or "anonymous"
     filtered = []
 
-    for channel in channels:
-        if channel not in CHANNEL_PERMISSIONS:
+    for channel_str in channels:
+        try:
+            channel = Channel(channel_str)
+        except ValueError:
             continue
 
         channel_perms = CHANNEL_PERMISSIONS[channel]
         if role in channel_perms and permission in channel_perms[role]:
-            filtered.append(channel)
+            filtered.append(channel_str)
 
     return filtered
 

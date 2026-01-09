@@ -79,15 +79,15 @@ async def websocket_endpoint(
         try:
             restored_session = reconnection_manager.restore_session(reconnection_token, client_id)
             if restored_session:
-                user_id = restored_session["user_id"]
-                user_role = restored_session.get("metadata", {}).get("role", "viewer")
+                user_id = restored_session.user_id
+                user_role = restored_session.metadata.get("role", "viewer")
                 logger.info(
                     f"Session restored from reconnection token: user={user_id}",
                     extra={
                         "event": "session_restored",
                         "user_id": user_id,
                         "client_id": client_id,
-                        "subscriptions": restored_session.get("subscriptions", [])
+                        "subscriptions": list(restored_session.subscriptions)
                     }
                 )
         except Exception as e:
@@ -104,8 +104,8 @@ async def websocket_endpoint(
     if token and not restored_session:
         try:
             payload = jwt_manager.verify_token(token)
-            user_id = payload.user_id
-            user_role = payload.role if hasattr(payload, 'role') else "viewer"
+            user_id = payload.sub  # sub contains user_id
+            user_role = payload.scopes[0] if payload.scopes else "viewer"
             logger.info(
                 f"WebSocket authenticated: user={user_id}, role={user_role}",
                 extra={
@@ -132,8 +132,8 @@ async def websocket_endpoint(
         await connection_manager.connect(websocket, client_id, user_id)
 
         # Restore subscriptions if session was restored
-        if restored_session and restored_session.get("subscriptions"):
-            restored_channels = restored_session["subscriptions"]
+        if restored_session and restored_session.subscriptions:
+            restored_channels = list(restored_session.subscriptions)
             connection_manager.subscribe(client_id, restored_channels)
             logger.info(
                 f"Restored {len(restored_channels)} channel subscriptions",
