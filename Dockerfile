@@ -45,7 +45,7 @@ RUN cargo build --release --bin neurograph-api && \
 # =============================================================================
 # Stage 2: Runtime - Minimal Alpine image
 # =============================================================================
-FROM alpine:3.19 AS runtime
+FROM alpine:3.23 AS runtime
 
 # Install runtime dependencies only
 RUN apk add --no-cache \
