@@ -63,7 +63,7 @@ jupyter = [
 api = [
     "fastapi==0.109.0",
     "uvicorn[standard]==0.27.0",
-    "pydantic==2.5.3",
+    "pydantic==2.12.5",
     "pydantic-settings==2.1.0",
     "python-multipart==0.0.6",
     "python-dotenv==1.0.0",
@@ -86,7 +86,7 @@ all = [
     "plotly>=5.0.0",
     "fastapi==0.109.0",
     "uvicorn[standard]==0.27.0",
-    "pydantic==2.5.3",
+    "pydantic==2.12.5",
     "pydantic-settings==2.1.0",
     "python-multipart==0.0.6",
     "python-dotenv==1.0.0",
