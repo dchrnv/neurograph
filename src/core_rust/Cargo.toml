@@ -71,7 +71,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 futures = "0.3"
 
 # Prometheus metrics export (v0.42.0)
-prometheus = "0.13"
+prometheus = "0.14"
 lazy_static = "1.4"
 
 # OpenTelemetry distributed tracing (v0.44.0)
