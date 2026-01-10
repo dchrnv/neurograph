@@ -57,7 +57,7 @@ jobs:
 
     - name: Create GitHub Release
       if: github.event_name == 'workflow_dispatch'
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         tag_name: python-${{ github.event.inputs.version }}
         name: Python Client v${{ github.event.inputs.version }}
