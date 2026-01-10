@@ -1,0 +1,51 @@
+{
+  "scale": "100m",
+  "config": {
+    "name": "100M Tokens",
+    "tokens": 100000000,
+    "batch_size": 1000000,
+    "access_sample": 1000000,
+    "expected_time": "~2 hours",
+    "emoji": "\ud83d\ude80"
+  },
+  "timestamp": "2026-01-10T22:26:59.638966",
+  "system": {
+    "cpu_cores": 4,
+    "cpu_threads": 8,
+    "memory_gb": 5.73,
+    "python_version": "3.13.11",
+    "neurograph_version": "0.47.0"
+  },
+  "benchmarks": {
+    "single_creation": {
+      "test_count": 100000,
+      "time_sec": 0.049,
+      "rate_per_sec": 2023383.31,
+      "latency_us": 0.494,
+      "memory_start_mb": 16.04,
+      "memory_end_mb": 26.13,
+      "memory_delta_mb": 10.09
+    },
+    "batch_creation": {
+      "total_tokens": 100000000,
+      "num_batches": 100,
+      "batch_size": 1000000,
+      "time_sec": 27.26,
+      "rate_per_sec": 3667931.91,
+      "latency_us": 0.273,
+      "avg_batch_time_sec": 0.216,
+      "memory_start_mb": 24.77,
+      "memory_end_mb": 25.13,
+      "memory_delta_mb": 0.36
+    },
+    "token_access": {
+      "access_count": 1000000,
+      "sample_size": 10000,
+      "time_sec": 2.025,
+      "rate_per_sec": 493772.13,
+      "latency_ns": 2025.2
+    }
+  },
+  "total_time_sec": 29.35,
+  "status": "SUCCESS"
+}
