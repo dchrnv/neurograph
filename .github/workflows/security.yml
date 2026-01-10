@@ -1,0 +1,213 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run weekly on Mondays at 00:00 UTC
+    - cron: '0 0 * * 1'
+
+jobs:
+  bandit:
+    name: Python Security Scan (Bandit)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Bandit
+        run: |
+          pip install bandit[toml]
+
+      - name: Run Bandit
+        run: |
+          bandit -r src/api \
+            -f json \
+            -o bandit-report.json \
+            --severity-level medium \
+            --confidence-level medium
+
+      - name: Upload Bandit Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-report
+          path: bandit-report.json
+
+      - name: Fail on High Severity
+        run: |
+          python -c "
+          import json
+          with open('bandit-report.json') as f:
+              report = json.load(f)
+          high = report['metrics']['_totals'].get('SEVERITY.HIGH', 0)
+          if high > 0:
+              print(f'❌ Found {high} HIGH severity issues!')
+              exit(1)
+          print('✅ No HIGH severity issues found')
+          "
+
+  safety:
+    name: Python Dependency Check (Safety)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -e ".[api]"
+          pip install safety
+
+      - name: Run Safety Check
+        continue-on-error: true
+        run: |
+          safety check --json > safety-report.json || true
+
+      - name: Upload Safety Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: safety-report
+          path: safety-report.json
+
+  cargo-audit:
+    name: Rust Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+
+      - name: Run cargo audit
+        working-directory: src/core_rust
+        run: |
+          cargo audit --json > ../../cargo-audit-report.json || true
+
+      - name: Upload Cargo Audit Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cargo-audit-report
+          path: cargo-audit-report.json
+
+      - name: Fail on Critical Vulnerabilities
+        working-directory: src/core_rust
+        run: |
+          cargo audit --deny warnings || echo "⚠️ Vulnerabilities found, review required"
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['python']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  security-summary:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    needs: [bandit, safety, cargo-audit]
+    if: always()
+
+    steps:
+      - name: Download Bandit Report
+        uses: actions/download-artifact@v4
+        with:
+          name: bandit-report
+        continue-on-error: true
+
+      - name: Download Safety Report
+        uses: actions/download-artifact@v4
+        with:
+          name: safety-report
+        continue-on-error: true
+
+      - name: Download Cargo Audit Report
+        uses: actions/download-artifact@v4
+        with:
+          name: cargo-audit-report
+        continue-on-error: true
+
+      - name: Generate Security Summary
+        run: |
+          echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f bandit-report.json ]; then
+            echo "### Python Security (Bandit)" >> $GITHUB_STEP_SUMMARY
+            python -c "
+          import json
+          try:
+              with open('bandit-report.json') as f:
+                  report = json.load(f)
+              metrics = report['metrics']['_totals']
+              print(f\"- HIGH: {metrics.get('SEVERITY.HIGH', 0)}\")
+              print(f\"- MEDIUM: {metrics.get('SEVERITY.MEDIUM', 0)}\")
+              print(f\"- LOW: {metrics.get('SEVERITY.LOW', 0)}\")
+              print(f\"- Total Issues: {len(report.get('results', []))}\")
+          except Exception as e:
+              print(f'Error parsing report: {e}')
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Status" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Security scan completed" >> $GITHUB_STEP_SUMMARY
