@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "ngcore"
-version = "0.67.3"
+version = "0.67.4"
 description = "NeuroGraph - High-performance cognitive platform with Rust Core, WebSocket API, and Jupyter integration"
 authors = [{name = "Chernov Denys", email = "denys@neurograph.org"}]
 license = {text = "AGPL-3.0"}
