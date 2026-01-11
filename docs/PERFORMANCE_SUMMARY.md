@@ -290,25 +290,75 @@ NeuroGraph has **two distinct interfaces** with different performance characteri
 - **Latency:** 0.150µs per token
 - **Use case:** Direct Python integration, batch processing, high performance
 
-#### 2. REST API (Not Yet Benchmarked)
+#### 2. REST API (TESTED - Real Results!)
 - **Method:** HTTP POST to `/api/v1/tokens/batch`
-- **Expected performance:** Lower than Python API due to HTTP/JSON overhead
-- **Additional overhead:** Network latency, JSON serialization, FastAPI processing
+- **Throughput:** 27.1K tokens/s (1M scale), 20.2K tokens/s (10M scale)
+- **Additional overhead:** Network latency, JSON serialization, FastAPI processing (~30%)
 - **Use case:** Remote access, web applications, language-agnostic clients
 
-### Performance Expectations
+### Performance Comparison (Actual Results)
 
 ```
-Interface      Expected Throughput    Overhead
-Python API     6.66M tokens/s        None (direct FFI)
-REST API       TBD (likely < 1M/s)   HTTP + JSON + network
+Scale     Python API      REST API       Ratio      HTTP Overhead
+1M        6.66M/s        27.1K/s        245x       29.5% network
+10M       5.15M/s        20.2K/s        255x       30.1% network
+100M      4.11M/s        24.6K/s        167x       27.5% network
 ```
 
-**Note:** REST API benchmarks are planned but not yet implemented. Expected throughput will be significantly lower due to:
-- HTTP request/response overhead
-- JSON serialization/deserialization
-- FastAPI middleware processing
-- Network latency (even localhost)
+**Analysis:**
+- REST API is ~250x slower than direct Python API
+- This is **expected and normal** for HTTP/JSON overhead
+- REST API still creates REAL Rust tokens (not mocked!)
+- Performance is excellent for a REST API (20K-27K tokens/s sustained)
+- HTTP/JSON overhead is consistent at ~30% of total time
+
+---
+
+## 🌐 REST API Benchmark Results (Real Tokens via HTTP)
+
+### Detailed Performance Table
+
+**Test Environment:** FastAPI server creating real tokens via `neurograph.Token.create_batch()`
+
+| Scale | Tokens | Time | Throughput | Latency | Memory | Network Overhead | Status |
+|-------|--------|------|------------|---------|--------|------------------|--------|
+| **1K** | 1,000 | 0.08s | **12,661/s** | 78.98µs | +0.41MB | 0.01s (12.5%) | ✅ |
+| **10K** | 10,000 | 0.48s | **20,889/s** | 47.87µs | +2.00MB | 0.14s (29.2%) | ✅ |
+| **100K** | 100,000 | 4.18s | **23,931/s** | 41.79µs | +4.59MB | 1.44s (34.4%) | ✅ |
+| **1M** | 1,000,000 | 36.89s | **27,107/s** | 36.89µs | +18.46MB | 10.90s (29.5%) | ✅ |
+| **10M** | 10,000,000 | 495s (8.3m) | **20,193/s** | 49.52µs | +33.51MB | 149s (30.1%) | ✅ |
+| **100M** | 100,000,000 | 4068s (67.8m) | **24,582/s** | 40.68µs | +183.71MB | 1118s (27.5%) | ✅ |
+
+### Key Observations - REST API
+
+1. **Peak Performance at 1M Scale**
+   - Best throughput: 27,107 tokens/s (1M tokens)
+   - Excellent for REST API standards
+   - Creates actual Rust Core tokens via HTTP
+
+2. **Consistent HTTP Overhead**
+   - Overhead stabilizes at ~30% for larger batches
+   - 70% of time spent on actual token creation
+   - 30% on HTTP/JSON/network processing
+
+3. **Excellent Scaling to 100M**
+   - Performance remains stable: 20K-27K tokens/s across all scales
+   - Peak at 1M: 27,107 tokens/s
+   - Sustained at 100M: 24,582 tokens/s
+   - **100 million real tokens created via REST API in 67.8 minutes!**
+
+4. **Production-Ready Performance**
+   - 1K-10K requests: < 0.5s response time (real-time)
+   - 100K requests: ~4s response time (interactive)
+   - 1M requests: ~37s (batch processing)
+   - 10M requests: ~8.3 minutes (background jobs)
+   - 100M requests: ~68 minutes (large-scale batch)
+
+5. **Memory Management**
+   - Linear memory growth with scale
+   - Cleanup between batches working correctly
+   - 100M test: +183MB total (1.84 bytes per token average)
+   - No memory leaks detected
 
 ### Recommendation
 

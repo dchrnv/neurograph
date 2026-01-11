@@ -1,0 +1,26 @@
+{
+  "benchmark_type": "rest_api",
+  "scale": "10k",
+  "description": "10K tokens",
+  "timestamp": "20260111_130324",
+  "base_url": "http://localhost:8000",
+  "system_info": {
+    "cpu_count": 8,
+    "memory_total_gb": 5.73
+  },
+  "results": {
+    "total_tokens": 10000,
+    "target_tokens": 10000,
+    "batch_size": 500,
+    "num_batches": 20,
+    "overall_duration_seconds": 0.48,
+    "total_api_time_seconds": 0.34,
+    "throughput_tokens_per_second": 20889,
+    "latency_per_token_microseconds": 47.871,
+    "avg_batch_duration_seconds": 0.017,
+    "memory_before_mb": 29.73,
+    "memory_after_mb": 31.73,
+    "memory_delta_mb": 2.0,
+    "batches_completed": 20
+  }
+}
