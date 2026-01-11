@@ -4,6 +4,20 @@
 **Date:** 2026-01-11 (Updated with REAL token benchmarks)
 **Status:** ✅ PRODUCTION READY
 
+## 💻 Test Environment
+
+**Hardware:**
+- **CPU:** 8 cores @ 2.1 GHz (x86_64)
+- **Threads:** 2 threads per core
+- **RAM:** 5.7 GB
+- **Architecture:** x86_64
+
+**Software:**
+- **OS:** Linux 6.17.8-arch1-1
+- **Python:** 3.13.11
+- **Rust:** v0.47.0 (release build)
+- **Build Type:** Release (optimized)
+
 ---
 
 ## 🎯 Executive Summary
@@ -105,7 +119,7 @@ Tokens are actual Rust objects with:
 
 ```
 Duration: 0.2 seconds
-System: 4 cores, 5.73 GB RAM
+System: 8 cores @ 2.1 GHz, 5.7 GB RAM
 Method: neurograph.Token.create_batch() via PyO3 FFI
 ```
 
@@ -123,7 +137,7 @@ Method: neurograph.Token.create_batch() via PyO3 FFI
 
 ```
 Duration: 2.2 seconds
-System: 4 cores, 5.73 GB RAM
+System: 8 cores @ 2.1 GHz, 5.7 GB RAM
 Method: neurograph.Token.create_batch() via PyO3 FFI
 ```
 
@@ -142,7 +156,7 @@ Method: neurograph.Token.create_batch() via PyO3 FFI
 
 ```
 Duration: 26.3 seconds
-System: 4 cores, 5.73 GB RAM
+System: 8 cores @ 2.1 GHz, 5.7 GB RAM
 Method: neurograph.Token.create_batch() via PyO3 FFI
 ```
 
@@ -455,8 +469,8 @@ The system exceeds all performance targets and demonstrates production-grade rel
 
 ---
 
-**Generated:** 2026-01-10 22:28
-**Test Environment:** Linux 6.17.8-arch1-1, Python 3.13.11
-**Rust Core:** v0.47.0 (release build)
-**Total Testing Time:** ~35 minutes (tests + benchmarks)
+**Generated:** 2026-01-11
+**Hardware:** 8 cores @ 2.1 GHz, 5.7 GB RAM (x86_64)
+**Software:** Linux 6.17.8-arch1-1, Python 3.13.11, Rust v0.47.0
+**Total Testing Time:** ~2 hours (tests + Python API + REST API benchmarks)
 
