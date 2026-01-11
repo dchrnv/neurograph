@@ -14,9 +14,11 @@ from ..models.modules import (
     SuccessResponse,
 )
 from ..services.modules import module_service
+from ..logging_config import get_logger
 
 
 router = APIRouter()
+logger = get_logger(__name__, component="modules")
 
 
 @router.get(
@@ -58,12 +60,14 @@ async def set_module_enabled(module_id: str, request: SetEnabledRequest):
     """Включить/выключить модуль"""
     module = module_service.get_module(module_id)
     if module is None:
+        logger.warning(f"Module not found: {module_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Модуль '{module_id}' не найден",
         )
 
     if not request.enabled and not module.can_disable:
+        logger.warning(f"Attempt to disable core module: {module_id}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Модуль '{module_id}' нельзя отключить (core module)",
@@ -72,11 +76,13 @@ async def set_module_enabled(module_id: str, request: SetEnabledRequest):
     try:
         module_service.set_enabled(module_id, request.enabled)
         action = "включен" if request.enabled else "выключен"
+        logger.info(f"Module {action}: {module_id}", extra={"enabled": request.enabled})
         return SuccessResponse(
             success=True,
             message=f"Модуль '{module.name}' {action}",
         )
     except Exception as e:
+        logger.error(f"Failed to set module enabled: {module_id}", extra={"error": str(e)})
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e),
@@ -133,12 +139,14 @@ async def set_module_config(module_id: str, request: SetConfigRequest):
     """Обновить конфигурацию модуля"""
     module = module_service.get_module(module_id)
     if module is None:
+        logger.warning(f"Module not found: {module_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Модуль '{module_id}' не найден",
         )
 
     if not module.configurable:
+        logger.warning(f"Attempt to configure non-configurable module: {module_id}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Модуль '{module_id}' не поддерживает конфигурацию",
@@ -146,11 +154,13 @@ async def set_module_config(module_id: str, request: SetConfigRequest):
 
     try:
         module_service.set_config(module_id, request.config)
+        logger.info(f"Module config updated: {module_id}", extra={"config_keys": list(request.config.keys())})
         return SuccessResponse(
             success=True,
             message=f"Конфигурация модуля '{module.name}' обновлена",
         )
     except Exception as e:
+        logger.error(f"Failed to update module config: {module_id}", extra={"error": str(e)})
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e),

@@ -2,7 +2,7 @@
 
 **Версия:** 1.3
 **Последнее обновление:** 2026-01-11
-**Текущая версия:** v0.67.4
+**Текущая версия:** v0.67.1
 **Статус:** Активная разработка - 98% завершено
 
 ---
@@ -11,11 +11,12 @@
 
 NeuroGraph - это высокопроизводительная когнитивная платформа, объединяющая Rust Core, WebSocket API и интеграцию с Jupyter. Проект в отличном состоянии: **98% завершено**, Фазы 1 и 2 полностью готовы, опубликовано на PyPI.
 
-**Недавнее достижение:** 🎉 Фаза 3.4 завершена! (v0.67.4, 2026-01-11)
+**Недавнее достижение:** 🎉 Фаза 3.1 & 3.4 завершены! (v0.67.1, 2026-01-11)
 
+- ✅ Monitoring: Health endpoints, 3 Grafana dashboards, 9 alert rules
+- ✅ Structured logging: 12/12 роутеров, 200+ log statements
 - ✅ Stress benchmarks: 1M/10M/100M токенов (6.7M → 3.7M tokens/s)
 - ✅ Test suite validated: 441 tests, 96.4% pass rate
-- ✅ Performance documentation complete (docs/PERFORMANCE_SUMMARY.md)
 
 **Путь к v1.0.0:** ~3-4 недели работы
 
@@ -28,8 +29,9 @@ NeuroGraph - это высокопроизводительная когнити�
 
 - **v0.64.4** - Фаза 1 завершена (Качество кода)
 - **v0.65.0** - ✅ Фаза 2 завершена (Документация)
-- **v0.67.4** - ✅ Фаза 3.4 завершена (Performance Testing) - Текущая версия
-- **v0.67.1-3** - Monitoring + Docker + Security (в процессе)
+- **v0.67.1** - ✅ Фаза 3.1 завершена (Monitoring & Observability) - Текущая версия
+- **v0.67.4** - ✅ Фаза 3.4 завершена (Performance Testing)
+- **v0.67.2-3** - Docker + Security (в процессе)
 - **v0.69.0** - Final Polish + Release preparation
 - **v1.0.0** - 🎉 Production-ready релиз!
 
@@ -279,28 +281,33 @@ NeuroGraph - это высокопроизводительная когнити�
 
 **Приоритет:** 🔴 ВЫСОКИЙ (критично для v1.0.0)
 
-**Прогресс:** 2/15 задач завершено (13%)
+**Прогресс:** 6/15 задач завершено (40%)
 
-**Подфаза 3.1: Monitoring & Observability (v0.67.1)** - ⏳ ОЖИДАНИЕ
+**Подфаза 3.1: Monitoring & Observability (v0.67.1)** - ✅ **ЗАВЕРШЕНО**
 
 **Задачи:**
 
-- [ ] Расширить health endpoints
-  - `/health/live` - liveness probe для K8s
-  - `/health/ready` - readiness probe для K8s
-  - Детализация статуса компонентов (Rust Core, WebSocket, Storage)
-- [ ] Создать Grafana dashboards (3-5 dashboards):
-  - System Overview - CPU, Memory, Requests/sec
-  - API Performance - endpoint latency, error rates
-  - WebSocket Metrics - connections, messages, latency
-  - Token & Grid Operations - CRUD ops, spatial queries
-  - CDNA & Modules - profile switches, module health
-- [ ] Настроить Alert rules для Prometheus:
-  - High error rate (>5% 5xx responses)
-  - High latency (p95 > 1s)
-  - Memory/CPU saturation (>80%)
-  - WebSocket connection drops
-- [ ] Добавить structured logging для всех критичных операций
+- [X] Расширить health endpoints ⭐ **v0.67.0**
+  - ✅ `/health/live` - liveness probe для K8s
+  - ✅ `/health/ready` - readiness probe для K8s
+  - ✅ `/health/startup` - startup probe для K8s
+  - ✅ `/health/components` - детализация компонентов
+  - ✅ Детализация статуса (Rust Core, WebSocket, Storage, CDNA)
+- [X] Создать Grafana dashboards (3-5 dashboards) ⭐ **v0.67.0**
+  - ✅ System Overview - CPU, Memory, Requests/sec, latency
+  - ✅ WebSocket Metrics - connections, messages, channels, buffers
+  - ✅ Token & Grid Operations - CRUD ops, spatial queries, latency
+- [X] Настроить Alert rules для Prometheus ⭐ **v0.67.0**
+  - ✅ 9 alert rules в 2 группах (API + Storage)
+  - ✅ High error rate (>5% 5xx responses)
+  - ✅ High latency (p95 > 1s)
+  - ✅ Memory/CPU saturation (>80%)
+  - ✅ WebSocket connection drops
+  - ✅ Service down, high request rate, storage capacity
+- [X] Добавить structured logging для всех критичных операций ⭐ **v0.67.1**
+  - ✅ 12/12 роутеров имеют логирование (100%)
+  - ✅ 27 компонентов с structured logging
+  - ✅ 200+ log statements
 
 **Подфаза 3.2: Docker & Deployment (v0.67.2)** - ⏳ ОЖИДАНИЕ
 

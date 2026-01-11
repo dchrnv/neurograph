@@ -10,12 +10,14 @@ from ..models.response import SuccessResponse
 from ..auth.dependencies import get_current_active_user
 from ..cache import get_all_cache_stats, cleanup_all_caches
 from ..models.auth import User
+from ..logging_config import get_logger
 
 
 router = APIRouter(
     prefix="/cache",
     tags=["cache"],
 )
+logger = get_logger(__name__, component="cache")
 
 
 @router.get(
@@ -65,9 +67,12 @@ async def cleanup_caches_endpoint(
 
     **Requires:** admin:config permission
     """
+    logger.info("Cache cleanup initiated", extra={"user": user.username})
     cleanup_all_caches()
+    stats = get_all_cache_stats()
+    logger.info("Cache cleanup completed", extra={"stats": stats})
 
     return SuccessResponse(
         message="Cache cleanup completed",
-        data=get_all_cache_stats()
+        data=stats
     )

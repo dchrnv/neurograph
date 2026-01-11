@@ -12,7 +12,8 @@
       "Bash(python3 -m pytest:*)",
       "Bash(sort:*)",
       "Bash(xargs:*)",
-      "Bash(cargo clippy:*)"
+      "Bash(cargo clippy:*)",
+      "Bash(PYTHONPATH=python:$PYTHONPATH pytest:*)"
     ]
   }
 }
