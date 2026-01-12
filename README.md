@@ -147,7 +147,7 @@ See [docs/PERFORMANCE_SUMMARY.md](docs/PERFORMANCE_SUMMARY.md) for details.
 
 ## Project Status
 
-**Current:** v1.0.0-rc1 - Release Candidate 🎉
+**Current:** v1 - Release Candidate 🎉
 
 All 4 development phases complete:
 - ✅ **Phase 1:** Quality & Testing (378 API tests, MyPy clean)
