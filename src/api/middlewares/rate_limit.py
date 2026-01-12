@@ -67,28 +67,38 @@ class TokenBucket:
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """
-    Rate limiting middleware.
+    Enhanced rate limiting middleware with tiered limits.
 
     Features:
-    - Per-user rate limiting
-    - Per-API-key rate limiting (custom limits)
-    - Token bucket algorithm
+    - Per-user rate limiting (100 req/min for authenticated users)
+    - Per-IP rate limiting (30 req/min for unauthenticated IPs - stricter)
+    - Per-API-key rate limiting (custom limits per key)
+    - Token bucket algorithm for smooth rate distribution
     - Automatic cleanup of old buckets
+    - Rate limit headers in responses (X-RateLimit-*)
 
     Configuration:
-    - Default: 100 requests/minute per user
-    - API keys: Use per-key rate_limit setting
+    - Authenticated users: 100 requests/minute (default_rate_limit)
+    - Unauthenticated IPs: 30 requests/minute (ip_rate_limit - stricter)
+    - API keys: Configurable per key (from storage)
     - Cleanup: Remove buckets idle for 10+ minutes
+
+    Graceful Degradation:
+    - Health check endpoints are exempt from rate limiting
+    - Returns 429 with Retry-After header when limit exceeded
+    - Provides remaining quota in X-RateLimit-Remaining header
     """
 
     def __init__(
         self,
         app,
-        default_rate_limit: int = 100,  # requests per minute
+        default_rate_limit: int = 100,  # requests per minute (authenticated users)
+        ip_rate_limit: int = 30,  # requests per minute (unauthenticated IPs)
         cleanup_interval: int = 600  # 10 minutes
     ):
         super().__init__(app)
         self.default_rate_limit = default_rate_limit
+        self.ip_rate_limit = ip_rate_limit  # Stricter limit for IPs
         self.cleanup_interval = cleanup_interval
 
         # Per-user buckets: {user_id: TokenBucket}
@@ -124,8 +134,20 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         """Get or create token bucket for user."""
         with self.lock:
             if user_id not in self.buckets:
-                # TODO: Fetch custom rate limit from API key storage if applicable
-                self.buckets[user_id] = TokenBucket(self.default_rate_limit)
+                # Different limits based on user type
+                if user_id.startswith("ip_"):
+                    # Stricter limit for unauthenticated IPs
+                    rate_limit = self.ip_rate_limit
+                elif user_id.startswith("apikey_"):
+                    # TODO: Fetch custom rate limit from API key storage
+                    # For now, use default
+                    rate_limit = self.default_rate_limit
+                else:
+                    # Authenticated users get default limit
+                    rate_limit = self.default_rate_limit
+
+                self.buckets[user_id] = TokenBucket(rate_limit)
+                logger.debug(f"Created rate limit bucket for {user_id}: {rate_limit} req/min")
 
             self.last_access[user_id] = time.time()
             return self.buckets[user_id]

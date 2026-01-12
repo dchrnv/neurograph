@@ -110,10 +110,11 @@ app.add_middleware(
     log_response_body=settings.LOG_RESPONSE_BODY
 )
 
-# 6. Rate limiting (v0.58.0 - before auth to prevent abuse)
+# 6. Rate limiting (v0.58.0, enhanced in v0.67.3 - before auth to prevent abuse)
 app.add_middleware(
     RateLimitMiddleware,
-    default_rate_limit=100,  # 100 requests/minute default
+    default_rate_limit=100,  # 100 requests/minute for authenticated users
+    ip_rate_limit=30,  # 30 requests/minute for unauthenticated IPs (stricter)
     cleanup_interval=600  # Cleanup every 10 minutes
 )
 
