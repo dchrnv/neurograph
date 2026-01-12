@@ -190,7 +190,7 @@ async def login(request: LoginRequest) -> LoginResponse:
     return LoginResponse(
         access_token=access_token,
         refresh_token=refresh_token,
-        token_type="bearer",
+        token_type="bearer",  # noqa: B106 - OAuth 2.0 standard, not a password
         expires_in=jwt_manager.access_token_expire_minutes * 60,
         user=user_response,
     )
@@ -230,7 +230,7 @@ async def refresh_token(request: RefreshTokenRequest) -> RefreshTokenResponse:
         return RefreshTokenResponse(
             access_token=tokens["access_token"],
             refresh_token=tokens["refresh_token"],
-            token_type="bearer",
+            token_type="bearer",  # noqa: B106 - OAuth 2.0 standard, not a password
             expires_in=jwt_manager.access_token_expire_minutes * 60,
         )
     except Exception as e:

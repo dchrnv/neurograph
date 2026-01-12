@@ -59,7 +59,7 @@ class Settings(BaseSettings):
     CORS_ALLOW_ALL_ORIGINS: bool = False  # Set to False in production!
 
     # Server
-    HOST: str = "0.0.0.0"
+    HOST: str = "0.0.0.0"  # noqa: B104 - Intentional for Docker, production uses firewall
     PORT: int = 8000
     WORKERS: int = 4
 

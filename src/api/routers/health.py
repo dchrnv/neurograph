@@ -309,10 +309,10 @@ async def readiness_check(
     # Check token storage
     try:
         _ = token_storage.count()  # Quick operation test
-        checks["token_storage"] = "ok"
+        checks["token_storage"] = "ok"  # noqa: B105 - Status string, not a password
     except Exception as e:
         logger.warning(f"Token storage check failed: {e}")
-        checks["token_storage"] = "error"
+        checks["token_storage"] = "error"  # noqa: B105 - Status string, not a password
 
     # Check grid storage
     try:

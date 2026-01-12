@@ -1,99 +1,35 @@
-# Dependabot Configuration for NeuroGraph
-# Automated dependency updates for security and maintenance
-# Version: v0.67.3
-
+# Dependabot configuration for automated dependency updates and security scanning
 version: 2
-
 updates:
-  # Python dependencies (pip)
+  # Python dependencies
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "06:00"
     open-pull-requests-limit: 10
-    reviewers:
-      - "dchrnv"
     labels:
       - "dependencies"
       - "python"
-    commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
-    # Group minor and patch updates
-    groups:
-      development-dependencies:
-        dependency-type: "development"
-        update-types:
-          - "minor"
-          - "patch"
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-          - "patch"
-    # Ignore specific versions
-    ignore:
-      # Pin FastAPI to specific version for compatibility
-      - dependency-name: "fastapi"
-        update-types: ["version-update:semver-major"]
-      # Pin Pydantic v2
-      - dependency-name: "pydantic"
-        update-types: ["version-update:semver-major"]
-
-  # Rust dependencies (Cargo)
+      - "security"
+  
+  # Rust dependencies
   - package-ecosystem: "cargo"
     directory: "/src/core_rust"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "06:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "dchrnv"
+    open-pull-requests-limit: 10
     labels:
       - "dependencies"
       - "rust"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    # Group patch updates
-    groups:
-      rust-dependencies:
-        update-types:
-          - "patch"
-
+      - "security"
+  
   # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "06:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "dchrnv"
     labels:
       - "dependencies"
-      - "github-actions"
-    commit-message:
-      prefix: "ci"
-      include: "scope"
-
-  # Docker (for base images in Dockerfile)
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
-    open-pull-requests-limit: 3
-    reviewers:
-      - "dchrnv"
-    labels:
-      - "dependencies"
-      - "docker"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
+      - "ci-cd"
