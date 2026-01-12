@@ -139,8 +139,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
                     # Stricter limit for unauthenticated IPs
                     rate_limit = self.ip_rate_limit
                 elif user_id.startswith("apikey_"):
-                    # TODO: Fetch custom rate limit from API key storage
-                    # For now, use default
+                    # FUTURE: Fetch custom rate limit from API key storage (v1.1.0+)
+                    # Current: Use default rate limit for all API keys
                     rate_limit = self.default_rate_limit
                 else:
                     # Authenticated users get default limit

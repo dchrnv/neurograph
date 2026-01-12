@@ -300,8 +300,8 @@ class WebSocketIntegration:
                     # Get connection stats
                     stats = connection_manager.get_connection_stats()
 
-                    # TODO: Get actual system metrics (CPU, memory, etc.)
-                    # For now, send connection stats
+                    # FUTURE: Add system metrics collection (CPU, memory, disk) (v1.1.0+)
+                    # Current: Broadcast WebSocket connection stats only
                     await self.broadcast_metrics(
                         total_connections=stats["total_connections"],
                         custom_metrics={

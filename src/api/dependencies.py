@@ -21,9 +21,7 @@ FastAPI Dependencies
 Dependency injection for runtime, storage, authentication, etc.
 """
 
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from typing import Optional
+from fastapi import HTTPException, status
 import logging
 
 from .storage import (
@@ -44,9 +42,6 @@ from .storage.runtime import (
 from .config import settings
 
 logger = logging.getLogger(__name__)
-
-# Security scheme
-security = HTTPBearer(auto_error=False)
 
 # Global runtime instance (v0.51.0 - initialized on demand)
 _runtime_instance: Optional[object] = None
@@ -104,59 +99,13 @@ def set_runtime(runtime):
     logger.info("Runtime instance set externally")
 
 
-async def verify_token(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
-) -> Optional[str]:
-    """
-    Verify JWT token (optional for development mode).
-
-    Args:
-        credentials: HTTP Bearer token
-
-    Returns:
-        User ID if authenticated, None if no token provided
-
-    Raises:
-        HTTPException: If token is invalid
-    """
-    if credentials is None:
-        # Development mode: allow unauthenticated access
-        return None
-
-    token = credentials.credentials
-
-    # TODO: Implement JWT verification
-    # For now, accept any token in development
-    logger.info(f"Token provided: {token[:20]}...")
-
-    return "anonymous"
-
-
-async def require_admin(user_id: Optional[str] = Depends(verify_token)) -> str:
-    """
-    Require admin authentication.
-
-    Args:
-        user_id: User ID from token verification
-
-    Returns:
-        User ID
-
-    Raises:
-        HTTPException: If not authenticated as admin
-    """
-    if user_id is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Admin authentication required"
-        )
-
-    # TODO: Check if user is admin
-    return user_id
-
-
 # =============================================================================
 # Storage Dependencies
+# =============================================================================
+#
+# NOTE: Authentication is handled by src/api/auth/dependencies.py
+#       Use get_current_active_user() for JWT authentication
+#       This file only contains storage dependency injection
 # =============================================================================
 
 def get_token_storage() -> TokenStorageInterface:

@@ -52,7 +52,7 @@ async def create_api_key(
             scopes=request.scopes,
             rate_limit=request.rate_limit,
             expires_in_days=request.expires_in_days,
-            environment="live"  # TODO: Make configurable
+            environment="live"  # FUTURE: Make configurable via API parameter (v1.1.0+)
         )
 
         logger.info(f"API key created: {api_key.key_id} by {current_user.user_id}")

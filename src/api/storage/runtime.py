@@ -227,7 +227,8 @@ class RuntimeGridStorage(GridStorageInterface):
         self, grid_id: int, space: int, x: float, y: float, z: float, radius: float
     ) -> float:
         """Calculate field influence at point (not yet in FFI)."""
-        # TODO: Add to FFI in future version
+        # FUTURE: Add to Rust FFI bindings (v1.1.0+)
+        # Current: Returns placeholder value, feature not yet exposed
         logger.warning("calculate_field_influence not yet in RuntimeStorage FFI")
         return 0.0
 

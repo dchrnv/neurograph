@@ -516,8 +516,8 @@ async def clear_all_tokens(
         )
 
     try:
-        # TODO: Add admin authentication check
-        # For now, anyone can clear (development mode)
+        # NOTE: Admin authentication already checked above (line 506-510)
+        #       Only users with admin:config permission can clear tokens
 
         cleared = storage.clear()
 

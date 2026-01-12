@@ -814,8 +814,8 @@ async def reset_config(
         )
 
     try:
-        # TODO: Add admin authentication check
-        # For now, anyone can reset (development mode)
+        # NOTE: Admin authentication already checked above (line 804-808)
+        #       Only users with admin:config permission can reset CDNA
 
         # Reset to default (explorer profile)
         default_config = {

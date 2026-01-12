@@ -49,8 +49,8 @@ async def query(
         # Generate signal ID for feedback
         signal_id = str(uuid.uuid4())
 
-        # TODO: Execute actual query through runtime
-        # For now, return mock data
+        # FUTURE: Execute actual query through runtime integration (v1.1.0+)
+        # Current: Return mock data for API structure validation
         logger.info(f"Query: '{request.text}' (limit={request.limit})")
 
         # Mock results

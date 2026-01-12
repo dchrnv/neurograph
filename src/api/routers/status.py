@@ -111,7 +111,7 @@ async def get_status(
             state="running",
             uptime_seconds=uptime,
             tokens={"total": token_count, "active": token_count},
-            connections={"total": 0, "active": 0},  # TODO: Add connection tracking in v0.54.0
+            connections={"total": 0, "active": 0},  # FUTURE: Add WebSocket connection tracking (v1.1.0+)
             memory_usage_mb=memory_mb,
             cpu_usage_percent=cpu_percent,
             components={
@@ -181,7 +181,8 @@ async def get_stats(
             detail=f"Permission denied: {Permission.READ_STATUS.value} required"
         )
 
-    # TODO: Get actual stats from runtime
+    # FUTURE: Get actual runtime statistics from metrics collector (v1.1.0+)
+    # Current: Return placeholder structure for API compatibility
     data = {
         "queries": {
             "total": 0,

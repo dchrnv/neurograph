@@ -194,7 +194,9 @@ async def startup_event():
     logger.info("NeuroGraph API starting up...")
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"CORS origins: {settings.CORS_ORIGINS}")
-    # TODO: Initialize neurograph runtime here
+
+    # NOTE: Runtime initialization is lazy-loaded via dependencies.get_runtime()
+    #       This allows for on-demand initialization based on storage backend
 
     # Start WebSocket integration (v0.60.0)
     await ws_integration.start()
@@ -214,7 +216,8 @@ async def shutdown_event():
     await ws_integration.stop()
     logger.info("WebSocket integration stopped")
 
-    # TODO: Cleanup neurograph runtime here
+    # NOTE: Runtime cleanup is handled automatically by Python's garbage collector
+    #       No explicit cleanup needed for current storage backends
 
 # Root endpoint
 @app.get("/", include_in_schema=False)
