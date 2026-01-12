@@ -4,7 +4,7 @@
 ///
 /// Run with: cargo run --release --bin integration-demo
 
-use neurograph_core::{
+use _core::{
     Token, Connection, Grid, GridConfig,
     CoordinateSpace, EntityType, ConnectionType,
     token_flags, connection_flags, active_levels,

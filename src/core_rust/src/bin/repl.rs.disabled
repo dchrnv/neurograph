@@ -1,4 +1,4 @@
-use neurograph_core::{
+use _core::{
     adapters::console::{ConsoleConfig, ConsoleInputAdapter, ConsoleOutputAdapter},
     adapters::{OutputAdapter, OutputContext},
     adna::{AppraiserConfig, InMemoryADNAReader},
@@ -133,10 +133,10 @@ async fn trigger_exploration(curiosity: &Arc<CuriosityDrive>) {
 
     // Add top region to exploration queue if available
     if let Some((state, score)) = uncertain_regions.first() {
-        let target = neurograph_core::curiosity::ExplorationTarget::new(
+        let target = _core::curiosity::ExplorationTarget::new(
             *state,
             *score,
-            neurograph_core::curiosity::ExplorationReason::Manual,
+            _core::curiosity::ExplorationReason::Manual,
         );
         curiosity.add_exploration_target(target);
         println!("\n  ✅ Top region added to exploration queue");
@@ -319,7 +319,7 @@ async fn run_repl(
                             );
 
                             // Create mock result for now
-                            use neurograph_core::action_executor::ActionResult;
+                            use _core::action_executor::ActionResult;
 
                             let result = ActionResult {
                                 success: true,

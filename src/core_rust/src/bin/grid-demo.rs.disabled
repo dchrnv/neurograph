@@ -5,7 +5,7 @@
 //! Usage:
 //!   cargo run --bin grid-demo --release
 
-use neurograph_core::{Token, Grid, GridConfig, CoordinateSpace, EntityType};
+use _core::{Token, Grid, GridConfig, CoordinateSpace, EntityType};
 
 fn main() {
     println!("NeuroGraph Grid V2.0 - Rust Demo");
