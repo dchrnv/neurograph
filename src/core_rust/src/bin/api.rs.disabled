@@ -2,7 +2,7 @@
 //
 // HTTP API server with distributed tracing support
 
-use _core::{
+use neurograph_core::{
     api::{create_router, ApiConfig, ApiState},
     bootstrap::{BootstrapConfig, BootstrapLibrary},
     curiosity::{CuriosityConfig, CuriosityDrive},

@@ -30,17 +30,19 @@ These warnings don't affect functionality and can be cleaned up in v1.1.0+.
 
 ---
 
-## ⏸️ Disabled Bins (Need Fixes for v1.1.0+)
+## ⏸️ Disabled Bins (Need API Updates for v1.1.0+)
 
-### Import Fixes Applied ✅
+### Disabled Because of API Changes
 
-All disabled bins have been updated from `neurograph_core` → `_core` to match the library name in Cargo.toml.
+The disabled bins use old API that has evolved. They were intentionally disabled during development when APIs changed.
 
-### Remaining Issues by Binary
+**Note:** All bins use `neurograph_core` for imports (correct). The library exports this name for Rust bins, while using `_core` as internal library name in Cargo.toml for Python FFI compatibility.
+
+### Issues by Binary
 
 #### 1. **demo.rs** (token-demo)
 **Status:** 4 errors - Packed field references
-**Issue:** E0793 - Reference to packed field is unaligned
+**Cargo.toml Comment:** "Temporarily disabled due to packed struct reference errors"
 
 ```rust
 error[E0793]: reference to packed field is unaligned
@@ -64,7 +66,7 @@ println!("   Weight preserved: {}", weight);
 
 #### 2. **grid-demo.rs**
 **Status:** 1 error - Type mismatch
-**Issue:** E0308 - Field calculation API changed
+**Cargo.toml Comment:** "Temporarily disabled due to compilation errors"
 
 ```rust
 error[E0308]: mismatched types
@@ -80,7 +82,7 @@ error[E0308]: mismatched types
 
 #### 3. **api.rs** (neurograph-api)
 **Status:** 2 errors - Type mismatches
-**Issue:** E0308 - REST API module has evolved
+**Cargo.toml Comment:** Not listed (implicitly disabled)
 
 **Root Cause:** The Rust REST API in `src/api/` module has been replaced/updated with FastAPI Python implementation. This demo uses old API.
 
@@ -95,7 +97,7 @@ error[E0308]: mismatched types
 
 #### 4. **repl.rs** (neurograph-repl)
 **Status:** 2 errors - Type mismatches
-**Issue:** E0308 - Curiosity and Gateway API changes
+**Cargo.toml Comment:** "Temporarily disabled due to RwLock migration"
 
 **Root Cause:** CuriosityDrive and Gateway APIs have evolved. REPL uses outdated interfaces.
 
@@ -107,6 +109,8 @@ error[E0308]: mismatched types
 
 #### 5. **integration-demo.rs**
 **Status:** 10 errors - Multiple API changes
+**Cargo.toml Comment:** "Temporarily disabled due to compilation errors"
+
 **Issues:**
 - E0432: Unresolved imports (`connection_flags`, `active_levels` no longer exported)
 - E0308: Type mismatches
@@ -124,14 +128,28 @@ error[E0308]: mismatched types
 
 ---
 
+#### 6. **connection-demo.rs** & **graph-demo.rs**
+**Status:** Missing files
+**Cargo.toml Comment:** "Temporarily disabled", "Missing file"
+
+**Issue:** Source files don't exist in src/bin/ directory.
+
+**Options:**
+- Create new demos for these features
+- Remove from Cargo.toml comments
+
+**Estimated Effort:** N/A (files don't exist)
+
+---
+
 ## 📊 Summary
 
 | Category | Count | Status |
 |----------|-------|--------|
 | **Working Bins** | 6 | ✅ All compile successfully |
 | **Disabled Bins** | 5 | ⏸️ Need API updates |
-| **Import Fixes** | 5/5 | ✅ All applied (`_core` migration) |
-| **Total Bins** | 11 | 54% functional |
+| **Missing Bins** | 2 | ❌ Files don't exist |
+| **Total Bins** | 13 | 46% functional |
 
 ---
 
@@ -184,10 +202,11 @@ cargo build --bin integration-demo
 
 ## 📝 Notes
 
-- **Library Name:** The crate uses `name = "_core"` in [lib] section of Cargo.toml
+- **Library Name:** The crate uses `name = "_core"` in [lib] section of Cargo.toml for Python FFI
+- **Rust Module Name:** Bins use `neurograph_core` (re-exported from `_core`)
 - **Python Module:** PyO3 exports as `neurograph_core` via `#[pymodule]` attribute
-- **Bin Imports:** Bins must use `use _core::*` not `use neurograph_core::*`
-- **All imports fixed:** All .disabled files now use correct `_core` imports
+- **Working bins:** Use standard `use neurograph_core::*` imports
+- **Disabled bins:** Also use `neurograph_core` (imports are correct, API changes are the issue)
 
 ---
 
