@@ -48,7 +48,7 @@ dotenv = { version = "0.15", optional = true }
 # Linear algebra and ML
 ndarray = "0.15"
 linfa = "0.7"
-linfa-reduction = "0.7"  # For PCA
+linfa-reduction = "0.8"  # For PCA
 
 # Fast deterministic hashing
 fasthash = "0.4"
