@@ -229,6 +229,93 @@ async def revoke_api_key(
         )
 
 
+@router.post("/api-keys/{key_id}/rotate", response_model=ApiResponse, status_code=status.HTTP_200_OK)
+async def rotate_api_key(
+    key_id: str,
+    current_user: User = Depends(get_current_active_user)
+):
+    """
+    Rotate API key - generates new key and revokes the old one.
+
+    **Requires:** `admin:config` permission
+
+    **Security best practice:** Rotate keys regularly (every 90 days recommended).
+
+    Process:
+    1. Generates new API key with same permissions
+    2. Marks old key as revoked
+    3. Returns new key (only shown once!)
+
+    Args:
+        key_id: ID of the key to rotate
+
+    Returns:
+        New full API key and metadata
+
+    Note: The new key is shown only once. Store it securely!
+    """
+    # Check permission
+    if Permission.ADMIN_CONFIG.value not in current_user.scopes:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Permission denied: {Permission.ADMIN_CONFIG.value} required"
+        )
+
+    try:
+        api_key_storage = get_api_key_storage()
+
+        # Get old key details
+        old_key = api_key_storage.get_key_by_id(key_id)
+        if not old_key:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"API key {key_id} not found"
+            )
+
+        # Generate new key with same properties
+        full_key, new_key = api_key_storage.generate_key(
+            name=f"{old_key['name']} (rotated)",
+            description=f"Rotated from {key_id}",
+            scopes=old_key.get('scopes', []),
+            rate_limit=old_key.get('rate_limit')
+        )
+
+        # Revoke old key
+        api_key_storage.revoke_key(key_id)
+
+        logger.info(
+            f"API key rotated: {key_id} -> {new_key['key_id']} by {current_user.user_id}",
+            extra={
+                "event": "api_key_rotated",
+                "old_key_id": key_id,
+                "new_key_id": new_key['key_id'],
+                "user": current_user.user_id
+            }
+        )
+
+        return ApiResponse.success_response(
+            data={
+                "key": full_key,  # Full key shown only once!
+                "key_id": new_key['key_id'],
+                "name": new_key['name'],
+                "created_at": new_key['created_at'],
+                "scopes": new_key.get('scopes', []),
+                "old_key_id": key_id,
+                "old_key_status": "revoked",
+                "message": "API key rotated successfully. Store the new key securely!"
+            }
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"API key rotation failed: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to rotate API key: {str(e)}"
+        )
+
+
 @router.delete("/api-keys/{key_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_api_key(
     key_id: str,
