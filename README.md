@@ -99,12 +99,13 @@ maturin build --release
 
 **Current:** v0.68.0 - Phase 4.1 Complete (80% to v1.0.0)
 
-**Recent Updates (2026-01-13):**
-- ✅ Fixed all Rust compilation issues
-- ✅ Resolved 11 dead_code warnings (0 warnings now)
-- ✅ Analyzed 25 TODO comments (categorized by priority)
-- ✅ Created [DEFERRED.md](DEFERRED.md) for tracking deferred tasks
-- ✅ All demo bins compile and run successfully
+**Recent Updates (2026-01-14):**
+- ✅ Fixed all Rust compilation issues (0 warnings)
+- ✅ Feedback system P1 (rewards) - working
+- ✅ Critical discovery: Graph is dead code (1400+ LOC unused)
+- ✅ Documented P2 requirements for v1.1.0
+- ✅ Fixed documentation broken links
+- ✅ Created comprehensive analysis docs ([GRAPH_ANALYSIS.md](GRAPH_ANALYSIS.md))
 
 **Completed Phases:**
 - ✅ Phase 1: Code Quality (100%)
@@ -124,9 +125,11 @@ maturin build --release
 - Docker images <300MB
 
 **Known Limitations (v1.0.0):**
-- Feedback system (reward updates) - deferred to v1.1.0
+- ✅ Feedback P1 (reward updates) - working (updates last 1000 events)
+- Feedback P2 (user connections) - stub, full implementation v1.1.0
 - ADNA proposal application - deferred to v1.1.0
-- See [DEFERRED.md](DEFERRED.md) for full list
+- Graph code (1400+ LOC) - unused, will be removed in v1.1.0
+- See [DEFERRED.md](DEFERRED.md) for full list and [GRAPH_ANALYSIS.md](GRAPH_ANALYSIS.md) for details
 
 **Roadmap:**
 - v1.0.0: 1-2 days (documentation + release prep)

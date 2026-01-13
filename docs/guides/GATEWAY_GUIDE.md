@@ -490,5 +490,5 @@ print(f"Loaded: {event.event_id}")
 ## See Also
 
 - [SignalSystem Guide](SIGNAL_SYSTEM_GUIDE.md) - Rust Core integration
-- [ActionController Guide](ACTION_CONTROLLER_GUIDE.md) - Response generation
+- [ActionController v2.0](../specs/ActionController v2.0.md) - Response generation
 - [Getting Started](GETTING_STARTED.md) - Quick start guide

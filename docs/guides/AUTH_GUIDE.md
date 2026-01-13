@@ -505,6 +505,6 @@ curl -X POST http://localhost:8000/api/v1/api-keys \
 ---
 
 **For more details:**
-- [API Reference](../API.md)
+- [API Documentation](../../src/api/README.md)
 - [Getting Started](./GETTING_STARTED.md)
-- [MASTER_PLAN v3.0](../MASTER_PLAN_v3.0.md)
+- [ROADMAP.md](../../ROADMAP.md)
