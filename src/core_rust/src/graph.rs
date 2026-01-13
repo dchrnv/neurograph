@@ -364,6 +364,7 @@ pub struct ActivatedNode {
 /// assert_eq!(neighbors.len(), 1);
 /// ```
 pub struct Graph {
+    #[allow(dead_code)]
     config: GraphConfig,
     /// Outgoing edges for each node
     adjacency_out: HashMap<NodeId, Vec<EdgeId>>,

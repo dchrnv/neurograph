@@ -20,13 +20,16 @@
 //! Intent → ActionController → ADNA Policy → Executor Selection → Action Execution → Logging
 
 use neurograph_core::{
-    ActionController, ActionControllerConfig,
+    ActionController, ActionControllerConfig, ArbiterConfig,
     ADNAReader, InMemoryADNAReader,
     ExperienceStream, ExperienceWriter,
     NoOpExecutor, MessageSenderExecutor,
     Intent, ActionPolicy,
+    IntuitionEngine, IntuitionConfig,
+    Guardian,
 };
 use std::sync::Arc;
+use parking_lot::RwLock;
 
 #[tokio::main]
 async fn main() {
@@ -39,21 +42,38 @@ async fn main() {
     println!("   ✓ ExperienceStream created (capacity: 1000)");
     println!("   ✓ ADNA reader with default config\n");
 
-    // 2. Create ActionController with config from JSON file
-    println!("[2] Creating ActionController...");
+    // 2. Create IntuitionEngine and Guardian for ActionController
+    println!("[2] Creating IntuitionEngine and Guardian...");
+    let intuition_config = IntuitionConfig::default();
+    let (proposal_tx, _proposal_rx) = tokio::sync::mpsc::channel(100);
+    let intuition = Arc::new(RwLock::new(IntuitionEngine::new(
+        intuition_config,
+        experience_stream.clone(),
+        adna_reader.clone(),
+        proposal_tx,
+    )));
+    let guardian = Arc::new(Guardian::new());
+    println!("   ✓ IntuitionEngine and Guardian initialized\n");
+
+    // 3. Create ActionController with config from JSON file
+    println!("[3] Creating ActionController...");
     let config = ActionControllerConfig::from_file_or_default("action_controller_config.json");
+    let arbiter_config = ArbiterConfig::default();
     let controller = ActionController::new(
         adna_reader.clone() as Arc<dyn ADNAReader>,
         experience_stream.clone() as Arc<dyn ExperienceWriter>,
+        intuition,
+        guardian,
         config.clone(),
+        arbiter_config,
     );
     println!("   ✓ ActionController configured from JSON file");
     println!("   - Exploration rate: {}%", config.exploration_rate * 100.0);
     println!("   - Timeout: {}ms", config.timeout_ms);
     println!("   - Logging: {}\n", if config.log_all_actions { "enabled" } else { "disabled" });
 
-    // 3. Register executors
-    println!("[3] Registering executors...");
+    // 4. Register executors
+    println!("[4] Registering executors...");
     let noop = Arc::new(NoOpExecutor::new());
     let message_sender = Arc::new(MessageSenderExecutor::new());
 
@@ -63,8 +83,8 @@ async fn main() {
     println!("   ✓ Registered: {}", controller.list_executors().join(", "));
     println!();
 
-    // 4. Set up a simple ADNA policy (optional - will use default if not set)
-    println!("[4] Setting up ADNA policy...");
+    // 5. Set up a simple ADNA policy (optional - will use default if not set)
+    println!("[5] Setting up ADNA policy...");
     let mut policy = ActionPolicy::new("demo_policy");
     policy.set_weight(1, 0.3);  // NoOp with weight 0.3
     policy.set_weight(2, 0.7);  // MessageSender with weight 0.7
@@ -77,8 +97,8 @@ async fn main() {
     println!("   - NoOp weight: 0.3");
     println!("   - MessageSender weight: 0.7\n");
 
-    // 5. Execute several intents
-    println!("[5] Executing intents...\n");
+    // 6. Execute several intents
+    println!("[6] Executing intents...\n");
 
     // Intent 1: NoOp action
     println!("   Intent #1: test_noop");
@@ -189,8 +209,8 @@ async fn main() {
         }
     }
 
-    // 6. Summary of execution
-    println!("[6] Execution summary...");
+    // 7. Summary of execution
+    println!("[7] Execution summary...");
     println!("   ✓ 5 intents executed (4 successful, 1 failed validation)");
     println!("   ✓ All actions logged to ExperienceStream");
     println!("   (Each successful intent logs 2 events: action_started + action_finished)\n");

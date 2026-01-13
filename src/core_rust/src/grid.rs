@@ -67,6 +67,7 @@ impl BucketKey {
         }
     }
 
+    #[allow(dead_code)]
     fn neighbors(&self) -> Vec<BucketKey> {
         let mut result = Vec::with_capacity(27);
         for dx in -1..=1 {
@@ -145,6 +146,7 @@ impl SpatialIndex {
 /// Grid V2.0 - 8-dimensional semantic space
 pub struct Grid {
     /// Configuration
+    #[allow(dead_code)]
     config: GridConfig,
 
     /// Token storage: token_id -> Token

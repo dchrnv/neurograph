@@ -109,8 +109,10 @@ pub struct RuntimeStorage {
 
     // === Label Caches ===
     /// Label to ID mapping
+    #[allow(dead_code)]
     label_to_id: RwLock<HashMap<String, u32>>,
     /// ID to label mapping
+    #[allow(dead_code)]
     id_to_label: RwLock<HashMap<u32, String>>,
 }
 

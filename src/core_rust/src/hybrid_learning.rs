@@ -140,6 +140,7 @@ pub struct ProposalRouter {
     connections: Arc<RwLock<HashMap<u64, ConnectionV3>>>,
 
     /// Guardian for validation
+    #[allow(dead_code)]
     guardian: Arc<Guardian>,
 
     /// Statistics tracking

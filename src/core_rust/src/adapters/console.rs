@@ -30,6 +30,7 @@ impl Default for ConsoleConfig {
 
 /// Console output adapter
 pub struct ConsoleOutputAdapter {
+    #[allow(dead_code)]
     config: ConsoleConfig,
 }
 

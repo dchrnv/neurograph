@@ -73,6 +73,9 @@ async fn main() {
         state_bins_per_dim: 4,
         min_samples: 5, // Lower for demo
         min_reward_delta: 0.3,
+        enable_fast_path: true,
+        shift_config: ShiftConfig::default(),
+        fast_path_config: FastPathConfig::default(),
     };
 
     let intuition_engine = IntuitionEngine::new(

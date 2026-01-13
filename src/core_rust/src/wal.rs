@@ -241,6 +241,7 @@ impl WalWriter {
 /// WAL reader - sequential log reader for recovery
 pub struct WalReader {
     file: File,
+    #[allow(dead_code)]
     path: PathBuf,
 }
 

@@ -131,6 +131,7 @@ impl ADNAState {
 pub struct EvolutionManager {
     config: EvolutionConfig,
     adna_state: Arc<ADNAState>,
+    #[allow(dead_code)]
     cdna: Arc<CDNA>,
     experience_stream: Arc<ExperienceStream>,
     proposal_receiver: mpsc::Receiver<Proposal>,

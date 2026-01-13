@@ -115,6 +115,7 @@ pub type ModuleId = String;
 /// Subscription handle
 #[derive(Debug, Clone)]
 pub struct Subscription {
+    #[allow(dead_code)]
     module_id: ModuleId,
     event_types: Vec<EventType>,
     active: bool,

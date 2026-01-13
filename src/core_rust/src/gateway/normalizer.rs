@@ -179,6 +179,7 @@ impl Normalizer {
 }
 
 /// Simple Levenshtein distance
+#[allow(dead_code)]
 fn edit_distance(s1: &str, s2: &str) -> usize {
     let len1 = s1.len();
     let len2 = s2.len();

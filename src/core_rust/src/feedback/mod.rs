@@ -140,6 +140,7 @@ pub struct FeedbackProcessor {
     experience_stream: Arc<RwLock<ExperienceStream>>,
 
     /// Intuition engine for reflex updates
+    #[allow(dead_code)]
     intuition_engine: Arc<RwLock<IntuitionEngine>>,
 
     /// Track corrections per signal

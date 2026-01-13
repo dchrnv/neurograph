@@ -221,7 +221,7 @@ async fn demo_basic_workflow() {
             reward_efficiency: 0.0,
             reward_goal: 0.0,
             adna_version_hash: 0x12345678,
-            _reserved: [0; 4],
+            sequence_number: 0,
         };
 
         match stream.write_event(event) {
@@ -302,7 +302,7 @@ async fn demo_performance_benchmark() {
         reward_efficiency: 0.0,
         reward_goal: 0.0,
         adna_version_hash: 0xABCDEF00,
-        _reserved: [0; 4],
+        sequence_number: 0,
     };
 
     let start = Instant::now();
