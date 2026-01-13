@@ -254,54 +254,104 @@ impl FeedbackProcessor {
     }
 
     /// Apply positive feedback
-    async fn apply_positive(&self, signal_id: u64, strength: f32) -> Result<String, FeedbackError> {
-        // Update experience stream reward
-        let _stream = self.experience_stream.write();
+    ///
+    /// Simplified v1.0.0 implementation: Updates Goal rewards for recent events.
+    /// NOTE: Does not track which events correspond to which signal_id (deferred to v1.1.0).
+    /// Strategy: Update last 1000 events as a heuristic since we don't have signal_id tracking.
+    async fn apply_positive(&self, _signal_id: u64, strength: f32) -> Result<String, FeedbackError> {
+        use crate::experience_stream::AppraiserType;
 
-        // Find experience by signal_id and update reward
-        // For now, just return success message
-        // TODO: Implement actual reward update in ExperienceStream
+        let stream = self.experience_stream.read();
+        let total = stream.total_written();
+        let start_seq = if total > 1000 { total - 1000 } else { 0 };
 
-        Ok(format!("Applied positive feedback (strength: {:.2}) to signal {}", strength, signal_id))
+        let mut updated_count = 0;
+        for seq in start_seq..total {
+            if let Some(_event) = stream.get_event(seq) {
+                let new_reward = strength; // Scale: 0.0 to 1.0
+                if let Err(_) = stream.set_appraiser_reward(seq, AppraiserType::Goal, new_reward) {
+                    continue;
+                }
+                updated_count += 1;
+            }
+        }
+
+        Ok(format!(
+            "Applied positive feedback (strength: {:.2}) to {} recent events (simplified tracking)",
+            strength, updated_count
+        ))
     }
 
     /// Apply negative feedback
-    async fn apply_negative(&self, signal_id: u64, strength: f32) -> Result<String, FeedbackError> {
-        // Update experience stream with negative reward
-        let _stream = self.experience_stream.write();
+    ///
+    /// Simplified v1.0.0 implementation: Updates Goal rewards for recent events with negative values.
+    /// NOTE: Does not track which events correspond to which signal_id (deferred to v1.1.0).
+    /// Strategy: Update last 1000 events as a heuristic since we don't have signal_id tracking.
+    async fn apply_negative(&self, _signal_id: u64, strength: f32) -> Result<String, FeedbackError> {
+        use crate::experience_stream::AppraiserType;
 
-        // Find experience by signal_id and update reward
-        // For now, just return success message
-        // TODO: Implement actual reward update in ExperienceStream
+        let stream = self.experience_stream.read();
+        let total = stream.total_written();
+        let start_seq = if total > 1000 { total - 1000 } else { 0 };
 
-        Ok(format!("Applied negative feedback (strength: {:.2}) to signal {}", strength, signal_id))
+        let mut updated_count = 0;
+        for seq in start_seq..total {
+            if let Some(_event) = stream.get_event(seq) {
+                let new_reward = -strength; // Scale: -1.0 to 0.0 (negative)
+                if let Err(_) = stream.set_appraiser_reward(seq, AppraiserType::Goal, new_reward) {
+                    continue;
+                }
+                updated_count += 1;
+            }
+        }
+
+        Ok(format!(
+            "Applied negative feedback (strength: {:.2}) to {} recent events (simplified tracking)",
+            strength, updated_count
+        ))
     }
 
     /// Apply correction: "X is actually Y"
+    ///
+    /// NOTE: v1.0.0 stub - full implementation deferred to v1.1.0
+    /// Reason: Missing infrastructure for runtime token creation
+    /// See DEFERRED.md section 2.2 "Что необходимо для полноценной работы П2"
+    ///
+    /// Required for v1.1.0:
+    /// 1. signal_id → token_id mapping (Blocker #1)
+    /// 2. Runtime token creation API (Requirement #3)
+    /// 3. ConnectionV3 storage (user_connections HashMap)
+    ///
+    /// Architecture note: Graph is NOT needed (discovered 2026-01-13).
+    /// Simple HashMap<(u32, u32), ConnectionV3> is sufficient.
     async fn apply_correction(&self, signal_id: u64, correct_value: &str) -> Result<String, FeedbackError> {
         // Increment correction tracker
         let mut tracker = self.correction_tracker.write();
-
         tracker.increment(signal_id);
         drop(tracker);
 
-        // Parse correction and create/update token
         let _bootstrap = self.bootstrap.write();
 
-        // For now, just normalize the correct value
-        // TODO: Create actual connection between original and corrected
+        // TODO v1.1.0: Full implementation
+        // Step 1: Find token_id for signal_id (requires signal_to_tokens mapping)
+        // Step 2: Get or create token for correct_value (requires runtime tokens)
+        // Step 3: Create ConnectionV3(token_original, token_corrected, Correction type)
+        // Step 4: Store in user_connections HashMap
+        // Step 5: Mark original interpretation with lower confidence
 
-        Ok(format!("Applied correction: '{}' for signal {}", correct_value, signal_id))
+        Ok(format!("Correction received: '{}' for signal {} [stub]", correct_value, signal_id))
     }
 
     /// Apply association: "X relates to Y"
+    ///
+    /// NOTE: v1.0.0 stub - full implementation deferred to v1.1.0
+    /// See DEFERRED.md section 2.2 for details
     async fn apply_association(&self, signal_id: u64, related_word: &str, strength: f32) -> Result<String, FeedbackError> {
-        // Create association in bootstrap library
         let _bootstrap = self.bootstrap.write();
 
-        // For now, just normalize the related word
-        // TODO: Create actual connection with specified strength
+        // TODO v1.1.0: Create weighted Connection with specified strength
+        // Requires: Same as apply_correction - mutable Graph capability
 
-        Ok(format!("Applied association: '{}' (strength: {:.2}) for signal {}", related_word, strength, signal_id))
+        Ok(format!("Association received: '{}' (strength: {:.2}) for signal {} [stub]", related_word, strength, signal_id))
     }
 }
