@@ -21,6 +21,7 @@ FastAPI Dependencies
 Dependency injection for runtime, storage, authentication, etc.
 """
 
+from typing import Optional
 from fastapi import HTTPException, status
 import logging
 
