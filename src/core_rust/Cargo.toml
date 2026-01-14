@@ -1,9 +1,16 @@
 [package]
 name = "neurograph-core"
-version = "0.47.0"
+version = "1.0.0"
 edition = "2021"
-authors = ["NeuroGraph Team"]
-description = "NeuroGraph: Cognitive architecture with emergent knowledge structures in 8D semantic space"
+authors = ["Chernov Denys <noreply@neurograph.dev>"]
+description = "High-performance cognitive computing platform with Rust Core, WebSocket API, and real-time event processing (304K events/sec)"
+license = "AGPL-3.0"
+repository = "https://github.com/dchrnv/neurograph"
+homepage = "https://github.com/dchrnv/neurograph"
+documentation = "https://github.com/dchrnv/neurograph/tree/main/docs"
+readme = "README.md"
+keywords = ["cognitive-architecture", "neuroscience", "ai", "rust", "websocket"]
+categories = ["science", "simulation", "web-programming::websocket"]
 
 [dependencies]
 # PyO3 for Python FFI bindings (v0.40.0)
