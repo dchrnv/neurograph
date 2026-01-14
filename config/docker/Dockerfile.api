@@ -1,0 +1,88 @@
+# NeuroGraph API Server - Multi-stage Docker Build
+# Target: FastAPI Python Application
+# Final image: <300MB (Python slim-based)
+# Version: v0.67.0
+
+# =============================================================================
+# Stage 1: Builder - Install Python dependencies
+# =============================================================================
+FROM python:3.11-slim as builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    make \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /build
+
+# Copy only dependency files first for better caching
+COPY pyproject.toml ./
+COPY setup.py ./
+COPY README.md ./
+
+# Create virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir ".[api]"
+
+# =============================================================================
+# Stage 2: Runtime - Minimal Python image
+# =============================================================================
+FROM python:3.11-slim as runtime
+
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN groupadd -r neurograph && \
+    useradd -r -g neurograph -u 1000 neurograph
+
+# Create necessary directories
+RUN mkdir -p /app/data /app/logs /app/src && \
+    chown -R neurograph:neurograph /app
+
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+
+# Copy application code
+WORKDIR /app
+COPY --chown=neurograph:neurograph src/ ./src/
+COPY --chown=neurograph:neurograph pyproject.toml ./
+COPY --chown=neurograph:neurograph README.md ./
+
+# Set environment
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONPATH="/app:$PYTHONPATH" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+# Environment variables (can be overridden)
+ENV LOG_LEVEL=info \
+    LOG_JSON_FORMAT=true \
+    STORAGE_BACKEND=memory \
+    CORS_ORIGINS='["*"]' \
+    API_HOST=0.0.0.0 \
+    API_PORT=8000
+
+# Switch to non-root user
+USER neurograph
+
+# Expose API port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8000/api/v1/health/live || exit 1
+
+# Run the API server
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--log-config", "/dev/null"]

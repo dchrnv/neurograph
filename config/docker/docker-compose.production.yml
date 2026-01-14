@@ -1,0 +1,305 @@
+# NeuroGraph - Production Docker Compose Configuration
+# Optimized for production deployment with monitoring, security, and reliability
+# Version: v0.67.0
+
+version: '3.8'
+
+services:
+  # =============================================================================
+  # NeuroGraph API Server
+  # =============================================================================
+  neurograph-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      cache_from:
+        - neurograph/api:latest
+    image: neurograph/api:${VERSION:-v0.67.0}
+    container_name: neurograph-api
+    restart: unless-stopped
+
+    # Environment configuration
+    environment:
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_JSON_FORMAT=true
+      - LOG_CORRELATION_TRACKING=true
+      - LOG_REQUEST_BODY=false
+      - LOG_RESPONSE_BODY=false
+
+      # API configuration
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - STORAGE_BACKEND=${STORAGE_BACKEND:-memory}
+      - CORS_ORIGINS=${CORS_ORIGINS:-["*"]}
+
+      # Security
+      - SECRET_KEY=${SECRET_KEY:?SECRET_KEY is required}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
+      - JWT_ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+      # Performance
+      - WORKERS=${API_WORKERS:-4}
+      - MAX_REQUESTS=${MAX_REQUESTS:-10000}
+      - MAX_REQUESTS_JITTER=${MAX_REQUESTS_JITTER:-1000}
+
+      # Resource limits
+      - NEUROGRAPH_MAX_TOKENS=${NEUROGRAPH_MAX_TOKENS:-100000}
+      - NEUROGRAPH_MAX_MEMORY_BYTES=${NEUROGRAPH_MAX_MEMORY_BYTES:-2147483648}
+
+    # Port mapping
+    ports:
+      - "${API_PORT:-8000}:8000"
+
+    # Volume mounts for persistence
+    volumes:
+      - api-data:/app/data:rw
+      - api-logs:/app/logs:rw
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '${API_CPU_LIMIT:-2.0}'
+          memory: ${API_MEMORY_LIMIT:-2G}
+        reservations:
+          cpus: '${API_CPU_RESERVATION:-0.5}'
+          memory: ${API_MEMORY_RESERVATION:-512M}
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+    # Enhanced health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        compress: "true"
+
+    # Networks
+    networks:
+      - neurograph-network
+      - monitoring-network
+
+    # Dependencies
+    depends_on:
+      - prometheus
+
+  # =============================================================================
+  # Prometheus - Metrics Collection
+  # =============================================================================
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: neurograph-prometheus
+    restart: unless-stopped
+    user: "65534:65534"  # nobody user
+
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-15d}'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus-alerts.yml:/etc/prometheus/alerts/alerts.yml:ro
+      - prometheus-data:/prometheus:rw
+
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    networks:
+      - monitoring-network
+
+  # =============================================================================
+  # Grafana - Metrics Visualization
+  # =============================================================================
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: neurograph-grafana
+    restart: unless-stopped
+    user: "472:472"  # grafana user
+
+    environment:
+      # Security
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD is required}
+      - GF_SECURITY_SECRET_KEY=${GRAFANA_SECRET_KEY:?GRAFANA_SECRET_KEY is required}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_USERS_ALLOW_ORG_CREATE=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+
+      # Server
+      - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-http://localhost:3000}
+      - GF_SERVER_SERVE_FROM_SUB_PATH=false
+
+      # Paths
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_PATHS_DATA=/var/lib/grafana
+
+      # Dashboards
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/01-system-overview.json
+      - GF_DASHBOARDS_MIN_REFRESH_INTERVAL=10s
+
+      # Logging
+      - GF_LOG_MODE=console
+      - GF_LOG_LEVEL=info
+
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+
+    volumes:
+      - grafana-data:/var/lib/grafana:rw
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    networks:
+      - monitoring-network
+
+    depends_on:
+      - prometheus
+
+  # =============================================================================
+  # Jaeger (Optional) - Distributed Tracing
+  # =============================================================================
+  jaeger:
+    image: jaegertracing/all-in-one:1.51
+    container_name: neurograph-jaeger
+    restart: unless-stopped
+
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+      - COLLECTOR_OTLP_ENABLED=true
+      - SPAN_STORAGE_TYPE=badger
+      - BADGER_EPHEMERAL=false
+      - BADGER_DIRECTORY_VALUE=/badger/data
+      - BADGER_DIRECTORY_KEY=/badger/key
+
+    ports:
+      - "5775:5775/udp"   # zipkin thrift compact
+      - "6831:6831/udp"   # jaeger thrift compact
+      - "6832:6832/udp"   # jaeger thrift binary
+      - "5778:5778"       # config server
+      - "16686:16686"     # UI
+      - "14268:14268"     # jaeger collector
+      - "14250:14250"     # model.proto gRPC
+      - "9411:9411"       # zipkin collector
+
+    volumes:
+      - jaeger-data:/badger:rw
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    networks:
+      - monitoring-network
+
+    profiles:
+      - tracing
+
+# =============================================================================
+# Volumes - Persistent storage
+# =============================================================================
+volumes:
+  api-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-./data}/api
+  api-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR:-./data}/logs
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  jaeger-data:
+    driver: local
+
+# =============================================================================
+# Networks - Network isolation
+# =============================================================================
+networks:
+  neurograph-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  monitoring-network:
+    driver: bridge
+    internal: false

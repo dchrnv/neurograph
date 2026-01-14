@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(timeout 10 python:*)",
+      "Bash(python:*)",
+      "Bash(rm:*)",
+      "Bash(cargo build:*)",
+      "Bash(pytest:*)",
+      "Bash(python3 -m pytest:*)",
+      "Bash(sort:*)",
+      "Bash(xargs:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(PYTHONPATH=python:$PYTHONPATH pytest:*)"
+    ]
+  }
+}

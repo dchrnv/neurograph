@@ -1,0 +1,16 @@
+# NeuroGraph Performance Testing Requirements
+# Version: v0.67.4
+
+# Load testing
+locust>=2.20.0
+geventhttpclient>=2.0.11
+
+# WebSocket testing
+websocket-client>=1.7.0
+
+# Reporting and visualization
+matplotlib>=3.8.0
+pandas>=2.1.0
+
+# Additional tools
+requests>=2.31.0
